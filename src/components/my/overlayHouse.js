@@ -17,7 +17,6 @@ export default function OverlayHouse() {
     const green = { r: 58, g: 140, b: 46 };
 
     let normalizedScore = (score - min) / (max - min);
-    console.log(normalizedScore);
 
     let r, g, b;
     if (normalizedScore < 0.5) {
@@ -56,7 +55,8 @@ export default function OverlayHouse() {
   return <>{house && house.map((e) => (
       <Marker position={[e.latitude, e.longitude]} key={e.id} icon={icon(e.punteggio)} >
         <Popup> 
-          <span>{e.metri}m² </span>
+          <small>Prezzo: {e.prezzo}m² </small>
+          <small>Area: {e.metri}€ </small>
         </Popup>
       </Marker>
     ))
