@@ -6,7 +6,7 @@ const sharedFeature = () => {
   /*Map dei PoI utilizzati -> key : {name, valueQuestionario, visibiliy}*/
   const [poi, setPoI] = useState(initializePoI);
 
-  /*Map delle zone -> name : {zone, select}*/
+  /*Vettore delle zone di Bolo-> {name, select, dati geojson}*/
   const [zone, setZone] = useState(initializePoI);
 
   /*raggio in metri -> float esempio: 30*/
@@ -71,7 +71,6 @@ export const currentFeature = () => {
   }
 
   const initializeHouse = async () => {
-    console.log(`http://localhost:5000/api/casa?raggio=${raggio*1000}&questionario=${getRispQuestionario()}`);
     return fetch(`http://localhost:5000/api/casa?raggio=${raggio*1000}&questionario=${getRispQuestionario()}`)
     .then(response => {
       if (!response.ok) {throw new Error('Network response was not ok ' + response.statusText);}
@@ -82,7 +81,6 @@ export const currentFeature = () => {
   }
   
   const getHouse = () =>{
-    console.log(house);
     return house;
   }
 
@@ -93,16 +91,32 @@ export const currentFeature = () => {
     return ris.slice(0, -1);
   }
 
-  /*const updateFeature = (key, value) => {
-    setFeatureMap(prevFeatureMap => ({
-      ...prevFeatureMap,
-      [key]: value
-    }));
-  };*/
+  const initializedZone = async ()=>{
+    try {
+      const response = await fetch('./db/zoneBO.geojson');
+      if (!response.ok) {
+        throw new Error('Failed to fetch GeoJSON data');
+      }
+      const data = await response.json();
+      const zonesArray = data.features.map((feature, index) => ({
+        nomeZona: feature.properties.name,
+        select: false,
+        data: feature
+      }));
+      setZone(zonesArray);
+      //setZoneGeojsonData(data);
+    } catch (error) {
+      console.error('Error fetching GeoJSON data:', error);
+    }
+  }
+
+  const getZone = ()=>{
+    return zone;
+  }
 
   return {updateVisibilityPoI, updateValuePoI, resetPoI, getAllNamePoI,
     initializeHouse, getHouse,
-    //initializedZone, updateZone, getZone,
+    initializedZone, getZone, //updateZone,
     getRispQuestionario, getRaggio, setRaggio};
 };
 

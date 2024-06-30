@@ -52,7 +52,8 @@ export default function OverlayHouse() {
     setMax(maxScore);
   }, [house]);
 
-  return <>{house && house.map((e) => (
+  return <>
+    {house && house.map((e) => (
       <Marker position={[e.latitude, e.longitude]} key={e.id} icon={icon(e.punteggio)} >
         <Popup> 
           <small>Prezzo: {e.prezzo}m² </small>

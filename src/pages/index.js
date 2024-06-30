@@ -8,10 +8,11 @@ import { useEffect } from 'react';
 export default function Home() {
 
   const BOLOMap = dynamic(() => import('@components/my/BOLOmap'), {ssr: false})
-  const {resetPoI} = currentFeature();
+  const {resetPoI, initializedZone} = currentFeature();
 
   useEffect(()=>{
     resetPoI();
+    initializedZone();
   }, []);
   
 
