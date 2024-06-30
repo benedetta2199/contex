@@ -1,4 +1,4 @@
-
+import { geoJSON } from 'leaflet';
 import { useState } from 'react';
 import { useBetween } from 'use-between';
 
@@ -24,10 +24,12 @@ const sharedFeature = () => {
 
 export const currentFeature = () => {
   const { poi, setPoI, raggio, setRaggio, house, setHouse, zone, setZone } = useBetween(sharedFeature);
+  //const [zoneGeojsonData, setZoneGeojsonData] = useState();
 
-  /*const getFeature = (elem) => {
+  /*funzion che restituisce un PoI specifico*/
+  const getFeature = (elem) => {
     return featureMap[elem];
-  };*/
+  };
 
   /*funzione per riporate allo stato di partenza tutte le impostazioni PoI*/
   const resetPoI = () => {setPoI(initializePoI)};
@@ -84,6 +86,69 @@ export const currentFeature = () => {
     return house;
   }
 
+  /*
+  const initializedZone = async ()=>{
+    try {
+      const response = await fetch('./db/zoneBO.geojson');
+      if (!response.ok) {
+        throw new Error('Failed to fetch GeoJSON data');
+      }
+      const data = await response.json();
+      console.log(data);
+      setZoneGeojsonData(data);
+    } catch (error) {
+      console.error('Error fetching GeoJSON data:', error);
+    }
+  }*/
+
+  /*const getZoneGeoJSON = () =>{
+    return geoJSON
+  }*/
+
+/*
+  const getZone = ()=>{
+    return Array.from(zone.values());
+  }*/
+
+  /*
+  const updateZone = (name) =>{
+    let isInclude = false;
+    if(zone.includes(name)){
+      setZone(l => l.filter(item => item !== name));
+      isInclude = true;
+    } else{
+      setZone([...zone, name]);
+    }
+    //console.log(zone);
+    return isInclude;
+  }*/
+
+  /*
+  const getBestZone = () => {
+    // L'oggetto da inviare come JSON
+    let data = { 
+      'questionario': Array.from(poi, ([name, value]) => (value.visibility)), 
+      'zona': zone
+    };
+    // La richiesta fetch
+    return fetch('http://localhost:5000/api/area', { 
+      method: 'POST', // Specifica il metodo POST
+      headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) })
+    .then(response => {
+        if (!response.ok) { throw new Error('Network response was not ok ' + response.statusText);}
+        return response.json();
+    }) // Converti la risposta in un oggetto JSON
+    .then(responseData => { console.log('Success:', responseData); // Gestisci la risposta di successo
+    })
+    .catch(error => {
+        console.error('Error:', error); // Gestisci eventuali errori
+    });
+  }*/
+
+    
+
+  /*restituisce la stringa in formato corretto per la query
+    NB: slice(0, -1) è per non restituire l'ultima virgola*/
   const getRispQuestionario = () => {
     let ris ='';
     poi.forEach((values, keys) => {
@@ -91,14 +156,14 @@ export const currentFeature = () => {
     return ris.slice(0, -1);
   }
 
-  /*const updateFeature = (key, value) => {
-    setFeatureMap(prevFeatureMap => ({
-      ...prevFeatureMap,
-      [key]: value
-    }));
+  /*return {
+    poi, updateVisibilityPoI, updateValuePoI,
+    getResQuestionario, getFeature, resetFeature,
+    recomZone, setRecomZone
   };*/
 
-  return {updateVisibilityPoI, updateValuePoI, resetPoI, getAllNamePoI,
+  return { getFeature,
+    updateVisibilityPoI, updateValuePoI, resetPoI, getAllNamePoI,
     initializeHouse, getHouse,
     //initializedZone, updateZone, getZone,
     getRispQuestionario, getRaggio, setRaggio};
@@ -111,23 +176,21 @@ const DEFAULT_POS = [44.4950, 11.3424];
 const sharedMap = () => {
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);  
   const [position, setPosition] = useState(DEFAULT_POS);
-  const [raggio, setRaggio] = useState(0.5);
 
-  return { zoom, setZoom, position, setPosition, raggio, setRaggio };
+  return { zoom, setZoom, position, setPosition};
 };
 
 
 export const currentMap = () => {
-  const { zoom, setZoom, position, setPosition, raggio, setRaggio } = useBetween(sharedMap);
+  const { zoom, setZoom, position, setPosition} = useBetween(sharedMap);
 
   const resetMap = () => {
     setZoom(DEFAULT_ZOOM);
     setPosition(DEFAULT_POS);
   }
 
-  return { zoom, setZoom, position, setPosition, resetMap, DEFAULT_ZOOM, DEFAULT_POS, raggio, setRaggio };
+  return { zoom, setZoom, position, setPosition, resetMap, DEFAULT_ZOOM, DEFAULT_POS};
 };
-
 
 const initializePoI= ()=>{
   /*'cinema e teatri'*/
