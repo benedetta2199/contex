@@ -11,9 +11,6 @@ const sharedFeature = () => {
 
   /*raggio in metri -> float esempio: 30*/
   const [raggio, setRaggio] = useState(0.5);
-
-  /*Array contente i nomi delle zone selezionate dall'utente*/
-  //const [zone, setZone] = useState([]);
   
   /*case restituite dalla query in base ai parametri di raggio e risposte questionario*/
   const [house, setHouse] = useState([]);
@@ -99,7 +96,7 @@ export const currentFeature = () => {
       }
       const data = await response.json();
       const zonesArray = data.features.map((feature, index) => ({
-        nomeZona: feature.properties.name,
+        name: feature.properties.name,
         select: false,
         data: feature
       }));
@@ -114,9 +111,17 @@ export const currentFeature = () => {
     return zone;
   }
 
+  const updateSelectZone = (name) => {
+    setZone((prevZones) =>
+      prevZones.map((zone) =>
+        zone.name === name ? { ...zone, select: !zone.select } : zone
+      )
+    );
+  };
+
   return {updateVisibilityPoI, updateValuePoI, resetPoI, getAllNamePoI,
     initializeHouse, getHouse,
-    initializedZone, getZone, //updateZone,
+    initializedZone, getZone, updateSelectZone,
     getRispQuestionario, getRaggio, setRaggio};
 };
 

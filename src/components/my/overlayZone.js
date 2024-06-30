@@ -3,9 +3,7 @@ import { GeoJSON } from 'react-leaflet';
 import { currentFeature } from 'src/pages/api/state';
 
 export default function OverlayZone() {
-  const {getZone} = currentFeature();
-  const [geojsonData, setGeojsonData] = useState(null);
-  const [selectedZones, setSelectedZones] = useState([]);
+  const {getZone, updateSelectZone} = currentFeature();
   const [zones, setZones] = useState([]);
 
   const styleDefault = {fillColor: 'rgba(255, 255, 255, 0.4)', weight: 2, color: 'rgba(120, 120, 120, 0.4)'};
@@ -14,38 +12,33 @@ export default function OverlayZone() {
   useEffect(() => {
     if(zones.length==0){
       const fetchedZone = getZone();
-      if (fetchedZone.length > 0) {
+      if (zones.length==0 && fetchedZone.length > 0) {
         setZones(fetchedZone);
         console.log(fetchedZone);
       }
     }
   }, [getZone]);
 
-  const onEachZone = (zone, layer) => {
+  const onEachZone = (data, layer, zone) => {
     layer.on({
       click: () => {
-        if (selectedZones.includes(zone)) {
-          selectedZones.splice(selectedZones.indexOf(zone), 1);
-          layer.setStyle({ fillColor: 'rgba(255, 255, 255, 0.4)', weight: 2, color: 'rgba(120, 120, 120, 0.4)' });
-        } else {
-          selectedZones.push(zone);
-          layer.setStyle({ fillColor: 'rgba(0, 170, 183, 1)', weight: 2, color: 'rgba(0, 96, 128, 1)' });
-        }
+        updateSelectZone(data.name);
+        zone.select = !zone.select;
+        layer.setStyle(zone.select ? styleSelect : styleDefault);
       },
     });
 
     // Add a tooltip with the zone name
-    if (zone.properties && zone.properties.name) {
+    if (data.properties && zone.name) {
         var TooltipClass = {'className': 'custom-tooltip'}
-        layer.bindTooltip(zone.properties.name, {
-            ...TooltipClass
-          }, TooltipClass)
+        layer.bindTooltip(zone.name, { ...TooltipClass}, TooltipClass)
       }
   };
 
   return <>
     {zones.map((zone, index) => (
-        <GeoJSON key={index} data={zone.data} style={zone.select ? styleSelect : styleDefault} onEachFeature={onEachZone}/>
+        <GeoJSON key={index} data={zone.data} style={zone.select ? styleSelect : styleDefault} 
+        onEachFeature={(data, layer) => onEachZone(data, layer, zone)}/>
       ))}
 </>
 }

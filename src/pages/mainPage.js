@@ -23,6 +23,7 @@ export default function Home() {
       await initializeHouse();
       setLoading(false);
     };
+    
 
     fetchData();
   }, []);
