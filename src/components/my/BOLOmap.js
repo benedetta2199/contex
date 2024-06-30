@@ -5,15 +5,16 @@ import OverlayIcon from './overlayIcon';
 import { useEffect, useState } from 'react';
 import {currentFeature, currentMap } from 'src/pages/api/state';
 import OverlayZoneRec from './overlayZoneRec';
+import OverlayHouse from './overlayHouse';
 
 export default function BOLOMap(props) {
 
     const [elem, setElem] = useState([]);
-    const {zoom, setZoom, position, setPosition, DEFAULT_POS, raggio} = currentMap();
-    const {feature, getFeature, recomZone} = currentFeature();
+    const {zoom, setZoom, position, setPosition, DEFAULT_POS} = currentMap();
+    const {getAllNamePoI, recomZone, getRaggio} = currentFeature();
 
     const MapEventListener = ({ setZoom, setPosition }) => {
-      useMapEvents({
+      /*useMapEvents({
         zoomend: (event) => {
           const newZoom = event.target.getZoom();
           setZoom(newZoom);
@@ -23,12 +24,14 @@ export default function BOLOMap(props) {
           setPosition([newCenter.lat, newCenter.lng]);
         },
       });
-      return null;
+      return null;*/
     };
 
 
-    useEffect(()=>{
-      setElem(feature);
+    useEffect(() => {
+      if(elem.length==0){
+        setElem(getAllNamePoI());
+      }
     }, [elem]);
     
     const { width, height, clickable, circle, icon} = props;
@@ -50,15 +53,17 @@ export default function BOLOMap(props) {
         />
       {clickable && <OverlayZone/>}
       
-      {icon &&
+      {/*icon &&
         elem.map((el, index) => (
-            <OverlayIcon type={el} key={index} opacity={getFeature(el)}/>
-          ))
+            <OverlayIcon type={el.key} key={index}/>
+          ))*/
       }
+
+      {icon && <OverlayHouse/>}
 
       {recomZone && <OverlayZoneRec/>}
 
-      {circle && <Circle center={DEFAULT_POS} radius={raggio*1000} />}
+      {circle && <Circle center={DEFAULT_POS} radius={getRaggio()*1000} />}
        <MapEventListener setZoom={setZoom} setPosition={setPosition} />
     </MapContainer>
     </div>

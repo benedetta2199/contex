@@ -38,25 +38,23 @@ export default function Home() {
               0 se non si ritiene rilevante, 5 se si ritiene molto rilevante
             </h2>
 
-            <InputPref text='Quanto è rilevante la vicinanza al centro città?' id='1'/>
-            <InputPref text='Quanto è importante per te la vicinanza ai trasporti pubblici?' id='2'/>
-            <InputPref text='Quanto è importante per te la presenza di piste ciclabili?' id='3'/>
-            <InputPref text='Quanto è importante per te la presenza di parcheggi disponibili?' id='4'/>
-            <InputPref text='Quanto è importante per te la vicinanza a stazione?' id='5'/>
+            {/*<InputPref text='Quanto è rilevante la vicinanza al centro città?' keyMap='' id='1'/>
+            NB sono da modificare gli Id*/}
+            <InputPref text='Quanto è importante per te la vicinanza ai trasporti pubblici?' keyMap='fermate_bus' id='2'/>
+            <InputPref text='Quanto è importante per te la presenza di piste ciclabili?' keyMap='piste_ciclabili' id='3'/>
+            <InputPref text='Quanto è importante per te la presenza di parcheggi disponibili?' keyMap='' id='4'/>
+            <InputPref text='Quanto è importante per te la vicinanza a stazione?' keyMap='stazioni' id='5'/>
             <hr/>
-            <InputPref text='Quanto è importante per te la vicinanza a ristoranti e bar?' id='6'/>
-            <InputPref text='Quanto è importante per te la vicinanza a palestre e centri sportivi?' id='7'/>
-            <InputPref text='Quanto è importante per te la presenza di supermercati nelle vicinanze?' id='8'/>
-            <InputPref text='Quanto è importante per te la vicinanza a parchi e aree verdi?' id='9'/>
-            <InputPref text='Quanto è importante per te la vicinanza a ospedali e cliniche?' id='10'/>
+            <InputPref text='Quanto è importante per te la vicinanza a palestre e centri sportivi?' keyMap='impianti_sportivi' id='7'/>
+            <InputPref text='Quanto è importante per te la presenza di negozi nelle vicinanze?' keyMap='negozi' id='8'/>
+            <InputPref text='Quanto è importante per te la vicinanza a parchi e aree verdi?' keyMap='aree_verdi' id='9'/>
+            <InputPref text='Quanto è importante per te la vicinanza a ospedali e cliniche?' keyMap='ospedali' id='10'/>
             <hr/>
-            <InputPref text='Quanto è importante per te la vicinanza a biblioteche?' id='11'/>
-            <InputPref text='Quanto è importante per te la vicinanza a scuole?' id='12'/>
-            <InputPref text='Quanto è importante per te la vicinanza a musei ?' id='13'/>
-            <InputPref text='Quanto è importante per te la vicinanza a cinema e teatri?' id='14'/>
-            <InputPref text='Quanto è importante per te la vicinanza a chiese?' id='15'/>
-            <InputPref text='?' id='16'/>
-            <InputPref text='Quanto è importante per te la sicurezza del quartiere?' id='17'/>
+            <InputPref text='Quanto è importante per te la vicinanza a biblioteche?' keyMap='biblio' id='11'/>
+            <InputPref text='Quanto è importante per te la vicinanza a scuole?' keyMap='scuole' id='12'/>
+            <InputPref text='Quanto è importante per te la vicinanza a musei ?' keyMap='musei' id='13'/>
+            <InputPref text='Quanto è importante per te la vicinanza a cinema e teatri?' keyMap='teatri' id='14'/>
+            <InputPref text='Quanto è importante per te la vicinanza a chiese?' keyMap='chiese' id='15'/>
           </div>
         </Col>
       </Row>

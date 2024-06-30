@@ -2,30 +2,53 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Cutive&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-:root {
+/*#3D1D1C, #8D480B, #B73D1E, #CC6529, EE9B00, ECE2C3, 94D2BD, 0A9396, 005F73, 2B5750, 2A5737, 001219*/
+/*:root {
   --white: #fefefe;
   --black: #031116;
   --gray: #718e92;
-  --c1:#D62F2F;
-  --c1D:#6e0e00;  
-  --c2:#ee6700;
-  --c2D:#a84f0b;
-  --c3:#ffea00;
-  --c3D:#997906;
+  --c0:#D62F2F;
+  --c0D:#6e0e00;  
+  --c1:#ee6700;
+  --c1D:#a84f0b;
+  --c2:#ffea00;
+  --c2D:#997906;  
+  --c3:#9900b7;
+  --c3D: #5c0080;
   --c4:#00aab7;
   --c4D: #006080;
   --c5:#37c885;
   --c5D: #387b5c;
+}*/
 
+:root {
+  --white: #f1ede2;
+  --black: #031116;
+  --dark-brown: #3D1D1C;
+  --brown: #8D480B;
+  --gray: #718e92;
+  --c0:#B82A1D;
+  --c0D:#7C1C13;  
+  --c1:#CC6529;
+  --c1D:#AA5422;
+  --c2:#eec600;
+  --c2D:#ceae0a;  
+  --c3: #7F2790;
+  --c3D: #631F70;
+  --c4:#00778F;
+  --c4D: #005566;
+  --c5:#386A30;
+  --c5D: #2C5426;
 }
 
+.c0>input:checked, .c0>input:focus {background-color: var(--c0); border-color: var(--c0D); box-shadow: none;}
 .c1>input:checked, .c1>input:focus {background-color: var(--c1); border-color: var(--c1D); box-shadow: none;}
 .c2>input:checked, .c2>input:focus {background-color: var(--c2); border-color: var(--c2D); box-shadow: none;}
 .c3>input:checked, .c3>input:focus {background-color: var(--c3); border-color: var(--c3D); box-shadow: none;}
 .c4>input:checked, .c4>input:focus {background-color: var(--c4); border-color: var(--c4D); box-shadow: none;}
 .c5>input:checked, .c5>input:focus {background-color: var(--c5); border-color: var(--c5D); box-shadow: none;}
 
-input:checked, input:focus {box-shadow: none !important;}
+input:checked, input:focus {background-image: none; box-shadow: none !important;}
 
 .redT {color: var(--red);}
 .dredT {color: var(--dred);}
@@ -72,10 +95,29 @@ button{font-family: "Cutive",  monospace, serif !important; font-size: 12px !imp
 
 path:focus {outline: none;}
 
+.legend{
+  position: absolute; z-index: 10; bottom: 1vh; left: 1vw; 
+  background-color: rgba(241, 237, 226, 0.8);
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+.color-scale {
+  width: 100%; height: 10px;
+  background: linear-gradient(to right, #B82A1D, #eec600, #3a8c2e);
+  border-radius: 5px;
+}
+.min-max{display: flex; justify-content: space-between;}
+.min-max *{font-size: x-small; display: block;}
+
 
 hr{color: var(--lgray);}
 
 .form-check-input{margin: auto 5px !important;}
+.icon{width: 20px;}
+
+.leaflet-div-icon{background-color:transparent !important; border: none !important;}
+
+.leaflet-control-attribution {right: -15vw; bottom: -5px; transform: scale(0.5);}
 
 .visible{opacity: 1;}
 .invisible{opacity: 0;}

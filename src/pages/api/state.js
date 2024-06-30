@@ -71,6 +71,7 @@ export const currentFeature = () => {
   }
 
   const initializeHouse = async () => {
+    console.log(`http://localhost:5000/api/casa?raggio=${raggio*1000}&questionario=${getRispQuestionario()}`);
     return fetch(`http://localhost:5000/api/casa?raggio=${raggio*1000}&questionario=${getRispQuestionario()}`)
     .then(response => {
       if (!response.ok) {throw new Error('Network response was not ok ' + response.statusText);}
@@ -81,6 +82,7 @@ export const currentFeature = () => {
   }
   
   const getHouse = () =>{
+    console.log(house);
     return house;
   }
 
