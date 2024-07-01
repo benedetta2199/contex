@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Row, Col, Button, Form, Spinner } from 'react-bootstrap';
+import { Row, Col, Button, Form, Tabs, Tab } from 'react-bootstrap';
 import ModalRaggio from '@components/my/modalRaggio';
 import ModalZona from '@components/my/modalZone';
 import dynamic from 'next/dynamic'; 
@@ -10,21 +10,21 @@ import { currentFeature, currentMap } from './api/state';
 
 export default function Home() {
   const BOLOMap = dynamic(() => import('@components/my/BOLOmap'), {ssr: false});
-  const { getAllNamePoI, setRecomZone, updateVisibilityPoI, initializeHouse } = currentFeature();
-  const { resetMap } = currentMap();
+  const { getAllNamePoI, updateVisibilityPoI, initializeHouse, getValutazioneZone } = currentFeature();
+  const { resetMap, updateElementMap } = currentMap();
   const [elem, setElem] = useState([]);
+  const [key, setKey] = useState("case");
   const [loading, setLoading] = useState(true); // State to manage loading
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     resetMap();
+    getValutazioneZone();
     const fetchData = async () => {
       setElem(getAllNamePoI());
       await initializeHouse();
       setLoading(false);
     };
-    
-
     fetchData();
   }, []);
 
@@ -38,23 +38,53 @@ export default function Home() {
     <>
       <Row className='w-100 text-center'>
         <Col md={9}>
-          <div className='legend'>
-            <small>Punteggio delle case</small>
-            <div class="color-scale"></div>
-            <div class="min-max"><span>Min</span><span>Min</span></div>
-          </div>
           <div className='position-fixed w-75'>
-            <BOLOMap width="100%" height="100vh" circle={false} icon={true} clickable={false} />
+            <BOLOMap width="100%" height="100vh" circle={false} def={true} clickable={false} />
           </div>
         </Col>
+
         <Col md={3} className='p-4'>
-          <div className='d-flex justify-content-around'>
-            <ModalRaggio />
-            <ModalZona />
-          </div>
-          <Form className='w-100 d-flex justify-content-center my-4'>
-            <Form.Check type="switch" id="custom-switch" label="elem consigliate" onChange={(event) => setRecomZone(event.target.checked)} />
-          </Form>
+        <Tabs defaultActiveKey="cercaCasa" id="uncontrolled-tab-example" className="mb-3" 
+          activeKey={key} onSelect={(tab) => {setKey(tab); updateElementMap(tab)}}>
+          <Tab eventKey="case" title="Cerca Casa" className='menu-tab'>
+            <div className="p-1">
+              <p>
+                Qui puoi vedere le case che soddisfano le tue richieste colorate in base alla pertineza con i punti d'interesse.
+              </p>
+              <div className='legend'>
+                <small>Punteggio delle case</small>
+                <div class="color-scale"></div>
+                <div class="min-max"><span>Min</span><span>Min</span></div>
+              </div>
+              <div className='d-flex justify-content-around'>
+                <ModalRaggio />
+                <Button>Case visualizzate</Button>
+              </div>
+            </div>
+          </Tab>
+          <Tab eventKey="zone" title="Valuta Zone" className='menu-tab'>
+            <div className="p-1">
+              <p>
+                Guarda la valutazione delle zone che hai selezionato rispetto ai punti d'interesse.
+              </p>
+              <div className='legend'>
+                <small>Punteggio delle zone</small>
+                <div class="color-scale"></div>
+                <div class="min-max"><span>Min</span><span>Min</span></div>
+              </div>
+              <ModalZona />
+            </div>
+          </Tab>
+          <Tab eventKey="consigli" title="Consigli" className='menu-tab'>
+            <div className="p-1">
+              {/*
+              <h2 className='h6'>Consigli</h2>
+              <p>Leggi i nostri consigli su come scegliere la casa ideale, trattare con i venditori e risparmiare sui costi di acquisto.</p>
+              <Button variant="primary">Leggi Consigli</Button>
+              */}
+            </div>
+          </Tab>
+        </Tabs>
           <div>
             <hr />
             <p className='w-100 text-center'> Mostra gli elementi di rilevanza</p>

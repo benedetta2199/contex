@@ -3,19 +3,21 @@ import { useState } from 'react';
 import { Row , Col, Button, Form, Modal} from 'react-bootstrap';
 import SliderRaggio from './sliderRaggio';
 import BOLOMap from './BOLOmap';
+import { currentFeature } from 'src/pages/api/state';
 
 export default function ModalZona() {
 
   const [show, setShow] = useState(false);
+  const {setValutazioneZone} = currentFeature();
 
   const handleClose = () =>{
-    /**AGGIORNA CON QUERY */
+    setValutazioneZone();
     setShow(false)
   }
 
   return (
     <>
-    <Button onClick={() => setShow(true)} className="me-2">
+      <Button onClick={() => setShow(true)} className="me-2">
         Cambia Zone
       </Button>
 
@@ -31,7 +33,7 @@ export default function ModalZona() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-         <BOLOMap width="100%" height="75vh" clickable={true} circle={false}/>
+         <BOLOMap width="100%" height="75vh" clickable={true} circle={false} def={false}/>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleClose}>

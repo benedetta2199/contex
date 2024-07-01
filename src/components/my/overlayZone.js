@@ -14,7 +14,6 @@ export default function OverlayZone() {
       const fetchedZone = getZone();
       if (zones.length==0 && fetchedZone.length > 0) {
         setZones(fetchedZone);
-        console.log(fetchedZone);
       }
     }
   }, [getZone]);

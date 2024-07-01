@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Row , Col, Button, Form, Modal} from 'react-bootstrap';
 import SliderRaggio from './sliderRaggio';
@@ -32,7 +31,7 @@ export default function ModalRaggio() {
         </Modal.Header>
         <Modal.Body>
           <SliderRaggio button={false}/>
-          <BOLOMap width="100%" height="55vh" clickable={false} circle={true}/>
+          <BOLOMap width="100%" height="55vh" clickable={false} circle={true} def={false}/>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleClose}>

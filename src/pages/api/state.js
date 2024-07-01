@@ -7,27 +7,33 @@ const sharedFeature = () => {
   const [poi, setPoI] = useState(initializePoI);
 
   /*Vettore delle zone di Bolo-> {name, select, dati geojson}*/
-  const [zone, setZone] = useState(initializePoI);
+  const [zone, setZone] = useState([]);
+  const [valZone, setValZone] = useState([]);
 
   /*raggio in metri -> float esempio: 30*/
   const [raggio, setRaggio] = useState(0.5);
   
   /*case restituite dalla query in base ai parametri di raggio e risposte questionario*/
   const [house, setHouse] = useState([]);
-  //initialFeatureMap, recomZone, setRecomZone
 
-  return { poi, setPoI, raggio, setRaggio, house, setHouse, zone, setZone };
+  //initialFeatureMap, recomZone, setRecomZone
+  return { poi, setPoI, raggio, setRaggio, house, setHouse, zone, setZone,valZone, setValZone };
 };
 
 export const currentFeature = () => {
-  const { poi, setPoI, raggio, setRaggio, house, setHouse, zone, setZone } = useBetween(sharedFeature);
+  const { poi, setPoI, raggio, setRaggio, house, setHouse, zone, setZone, valZone, setValZone } = useBetween(sharedFeature);
+
 
   /*const getFeature = (elem) => {
     return featureMap[elem];
   };*/
 
   /*funzione per riporate allo stato di partenza tutte le impostazioni PoI*/
-  const resetPoI = () => {setPoI(initializePoI)};
+  const resetAll = () => {
+    setPoI(initializePoI);
+    setHouse([]);
+    setValZone([]);
+  };
 
   /*funzione che va a modificare la visibilità (value) di un PoI spefico definito da name*/
   const updateVisibilityPoI = (name, value) => {
@@ -119,11 +125,46 @@ export const currentFeature = () => {
     );
   };
 
-  return {updateVisibilityPoI, updateValuePoI, resetPoI, getAllNamePoI,
+  const setValutazioneZone = () => {
+    // L'oggetto da inviare come JSON
+    let data = {
+      'questionario': Array.from(poi.values(), (x)=> x.value), 
+      'zona': zone.filter(item => item.select === true).map(item => item.name)
+    };
+
+    // La richiesta fetch
+    fetch('http://localhost:5000/api/area', {
+        method: 'POST', // Specifica il metodo POST
+        headers: {
+            'Content-Type': 'application/json' // Specifica il tipo di contenuto
+        },
+        body: JSON.stringify(data) // Converti l'oggetto JavaScript in una stringa JSON
+    })
+    .then(response => {
+        if (!response.ok) { throw new Error('Network response was not ok ' + response.statusText);}
+        return response.json();        
+    }) // Converti la risposta in un oggetto JSON
+    .then(responseData => {
+        setValZone(responseData);
+    })
+    .catch(error => {
+        console.error('Error:', error); // Gestisci eventuali errori
+    });
+  }
+
+  const getValutazioneZone = () => {
+    return valZone;
+  }
+
+  return {updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
     initializeHouse, getHouse,
-    initializedZone, getZone, updateSelectZone,
+    initializedZone, getZone, updateSelectZone, setValutazioneZone, getValutazioneZone,
     getRispQuestionario, getRaggio, setRaggio};
 };
+
+
+
+
 
 const DEFAULT_ZOOM = 12;
 const DEFAULT_POS = [44.4950, 11.3424];
@@ -134,19 +175,42 @@ const sharedMap = () => {
   const [position, setPosition] = useState(DEFAULT_POS);
   const [raggio, setRaggio] = useState(0.5);
 
-  return { zoom, setZoom, position, setPosition, raggio, setRaggio };
+  const [elementMap, setElementMap] = useState({case: true, zone: false, consigli: false})
+
+  return { zoom, setZoom, position, setPosition, raggio, setRaggio, elementMap, setElementMap };
 };
 
-
 export const currentMap = () => {
-  const { zoom, setZoom, position, setPosition, raggio, setRaggio } = useBetween(sharedMap);
+  const { zoom, setZoom, position, setPosition, elementMap, setElementMap } = useBetween(sharedMap);
+
+  const getZoom = () => {
+    return zoom
+  }
+
+  const getPosition = () =>{
+    return position
+  }
+  
 
   const resetMap = () => {
     setZoom(DEFAULT_ZOOM);
     setPosition(DEFAULT_POS);
   }
 
-  return { zoom, setZoom, position, setPosition, resetMap, DEFAULT_ZOOM, DEFAULT_POS, raggio, setRaggio };
+  const updateElementMap = (name) =>{
+    const newElementMap={case: false, zone: false, consigli: false}
+    const updatedElementMap = {
+        ...newElementMap, // Mantieni gli altri attributi invariati
+        [name]: true, // Imposta l'attributo specificato a true
+      };
+      setElementMap(updatedElementMap);
+  }
+
+  const getElemMap = (name) =>{
+    return elementMap[name] 
+  }
+
+  return { getZoom, setZoom, getPosition, setPosition, resetMap, DEFAULT_POS, updateElementMap, getElemMap};
 };
 
 

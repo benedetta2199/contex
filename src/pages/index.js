@@ -4,14 +4,17 @@ import SliderRaggio from '@components/my/sliderRaggio';
 import dynamic from 'next/dynamic';
 import { currentFeature } from './api/state';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Home() {
 
   const BOLOMap = dynamic(() => import('@components/my/BOLOmap'), {ssr: false})
-  const {resetPoI, initializedZone} = currentFeature();
+  const {resetAll, initializedZone, setValutazioneZone} = currentFeature();
+  
+  const r = useRouter();
 
   useEffect(()=>{
-    resetPoI();
+    resetAll();
     initializedZone();
   }, []);
   
@@ -26,10 +29,11 @@ export default function Home() {
       <Row className='w-100 text-center'>
         <Col md={6}>
           <div className='position-fixed mx-4 w-50'>
-            <Form.Group className="my-2" controlId="raggio">
+            <Form.Group className="my-2 d-flex justify-content-around" controlId="raggio">
               <SliderRaggio button={true}/>
+              <Button variant="primary" onClick={() => {setValutazioneZone();r.push("./mainPage")}}>Conferma</Button>
             </Form.Group>
-            <BOLOMap width="100%" height="75vh" clickable={true} circle={false}/>
+            <BOLOMap width="100%" height="75vh" clickable={true} circle={false} def={false}/>
           </div>
         </Col>
         <Col md={6} className='px-4'>
@@ -43,7 +47,7 @@ export default function Home() {
             NB sono da modificare gli Id*/}
             <InputPref text='Quanto è importante per te la vicinanza ai trasporti pubblici?' keyMap='fermate_bus' id='2'/>
             <InputPref text='Quanto è importante per te la presenza di piste ciclabili?' keyMap='piste_ciclabili' id='3'/>
-            <InputPref text='Quanto è importante per te la presenza di parcheggi disponibili?' keyMap='' id='4'/>
+            <InputPref text='Quanto è importante per te la presenza di parcheggi disponibili?' keyMap='parcheggi' id='4'/>
             <InputPref text='Quanto è importante per te la vicinanza a stazione?' keyMap='stazioni' id='5'/>
             <hr/>
             <InputPref text='Quanto è importante per te la vicinanza a palestre e centri sportivi?' keyMap='impianti_sportivi' id='7'/>
