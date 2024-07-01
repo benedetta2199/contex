@@ -3,14 +3,17 @@ import { Row, Col, Button, Form, Tabs, Tab } from 'react-bootstrap';
 import ModalRaggio from '@components/my/modalRaggio';
 import ModalZona from '@components/my/modalZone';
 import dynamic from 'next/dynamic'; 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { currentFeature, currentMap } from './api/state';
 import ModalNCase from '@components/my/modalNCase';
 //import Preload from '@components/my/sliderRaggio'; // Import the Preload component
 //import { useRouter } from 'next/router';
 
 export default function Home() {
-  const BOLOMap = dynamic(() => import('@components/my/BOLOmap'), {ssr: false});
+  const BOLOMap = useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {
+    loading: () => <p>A map is loading</p>,
+    ssr: false
+  }), []);
   const { getAllNamePoI, updateVisibilityPoI, initializeHouse, getValutazioneZone } = currentFeature();
   const { resetMap, updateElementMap } = currentMap();
   const [elem, setElem] = useState([]);

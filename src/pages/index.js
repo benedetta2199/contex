@@ -3,12 +3,17 @@ import InputPref from '@components/my/inputPref';
 import SliderRaggio from '@components/my/sliderRaggio';
 import dynamic from 'next/dynamic';
 import { currentFeature } from './api/state';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 
 export default function Home() {
 
-  const BOLOMap = dynamic(() => import('@components/my/BOLOmap'), {ssr: false})
+  const BOLOMap =  useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {
+    loading: () => <p>A map is loading</p>,
+    ssr: false
+  }), []);
+
+  
   const {resetAll, initializedZone, setValutazioneZone, setSuggestArea} = currentFeature();
   
   const r = useRouter();
