@@ -15,26 +15,22 @@ const sharedFeature = () => {
   
   /*case restituite dalla query in base ai parametri di raggio e risposte questionario*/
   const [house, setHouse] = useState([]);
+  const [filterHouse, setFilterHouse] = useState([])
 
   /*Int N° case restituite*/
-  const [nhouse, setNHouse] = useState(50);
+  const [nhouse, setnHouse] = useState(50);
 
   /*Array con migliori aree in base agli interessi {centroide, altezza, larghezza, xTL, yTL*/
   const [bestArea, setBestArea] = useState([]);
 
-  const [loadHouse, setLoadHouse] = useState(false);
-
   //initialFeatureMap, recomZone, setRecomZone
-  return { poi, setPoI, raggio, loadHouse, setLoadHouse,
-    setRaggio, house, setHouse,  nhouse, setNHouse,
+  return { poi, setPoI, raggio, setRaggio, house, setHouse,  nhouse, setnHouse, filterHouse, setFilterHouse,
     zone, setZone,valZone, setValZone, bestArea, setBestArea};
 };
 
 export const currentFeature = () => {
-  const { poi, setPoI, raggio, loadHouse, setLoadHouse,
-    setRaggio, house, setHouse,  nhouse, setNHouse,
+  const { poi, setPoI, raggio, setRaggio, house, setHouse,  nhouse, setnHouse, filterHouse, setFilterHouse,
     zone, setZone,valZone, setValZone, bestArea, setBestArea} = useBetween(sharedFeature);
-
 
   /*const getFeature = (elem) => {
     return featureMap[elem];
@@ -93,7 +89,7 @@ export const currentFeature = () => {
     })
     .then(data => {
       setHouse(data);
-      setLoadHouse(true);
+      setFilterHouse(data.slice(0,nhouse));
     })
     .catch(error => {console.error('There was a problem with the fetch operation:', error);});
   }
@@ -139,7 +135,7 @@ export const currentFeature = () => {
     );
   };
 
-  const setValutazioneZone = () => {
+  const initializedValutazioneZone = () => {
     // L'oggetto da inviare come JSON
     let data = {
       'questionario': Array.from(poi.values(), (x)=> x.value), 
@@ -171,7 +167,7 @@ export const currentFeature = () => {
   }
 
   
-function setSuggestArea() {
+function initializedSuggestArea() {
   // Costruisci l'URL con i parametri della query
   console.log(`http://localhost:5000/api/suggest_locations?questionario=${getRispQuestionario()}`);
   let url = `http://localhost:5000/api/suggest_locations?questionario=${getRispQuestionario()}`;
@@ -194,15 +190,19 @@ function setSuggestArea() {
   }
 
   const getNHouse = () => {
-    console.log(nhouse)
     return nhouse;
   }
 
-  return {loadHouse,
-    updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
-    initializeHouse, getHouse, getNHouse, setNHouse,
-    initializedZone, getZone, updateSelectZone, setValutazioneZone, getValutazioneZone,
-    setSuggestArea, getSuggestArea,
+  const setNHouse = (n) => {
+    setnHouse(n);
+    setFilterHouse(house.slice(0, n));
+  }
+
+
+  return {updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
+    filterHouse, initializeHouse, getHouse, getNHouse, setNHouse,
+    initializedZone, getZone, updateSelectZone, initializedValutazioneZone, getValutazioneZone,
+    initializedSuggestArea, getSuggestArea,
     getRaggio, setRaggio};
 };
 

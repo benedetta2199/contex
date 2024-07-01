@@ -13,8 +13,8 @@ export default function Home() {
     ssr: false
   }), []);
 
-  
-  const {resetAll, initializedZone, setValutazioneZone, setSuggestArea} = currentFeature();
+
+  const {resetAll, initializedZone, initializeHouse, initializedValutazioneZone, initializedSuggestArea} = currentFeature();
   
   const r = useRouter();
 
@@ -24,8 +24,9 @@ export default function Home() {
   }, []);
 
   const btnConferma = () =>{
-    setValutazioneZone();
-    setSuggestArea(); 
+    initializeHouse();
+    initializedValutazioneZone();
+    initializedSuggestArea(); 
     r.push("./mainPage")
   }
   

@@ -8,10 +8,10 @@ import { currentFeature } from 'src/pages/api/state';
 export default function ModalZona() {
 
   const [show, setShow] = useState(false);
-  const {setValutazioneZone} = currentFeature();
+  const {initializedValutazioneZone} = currentFeature();
 
   const handleClose = () =>{
-    setValutazioneZone();
+    initializedValutazioneZone();
     setShow(false)
   }
 

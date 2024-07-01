@@ -5,7 +5,7 @@ import { currentFeature } from 'src/pages/api/state';
 import CustomIcon from 'public/icon/markerHouse';
 
 export default function OverlayHouse() {
-  const {getHouse, loadHouse} = currentFeature();
+  const {getHouse, filterHouse} = currentFeature();
   const [house, setHouse]= useState([]);
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
@@ -38,22 +38,15 @@ export default function OverlayHouse() {
   }
                 
   useEffect(() => {
-    const fetchedHouses = getHouse();
-    console.log(fetchedHouses);
-    if (fetchedHouses.length > 0) {
-      setHouse(fetchedHouses);
-    }
-  }, [loadHouse]);
-
-  useEffect(() => {
-    const minScore = Math.min(...house.map(e => e.punteggio));
-    const maxScore = Math.max(...house.map(e => e.punteggio));
+    console.log(filterHouse);
+    const minScore = Math.min(...filterHouse.map(e => e.punteggio));
+    const maxScore = Math.max(...filterHouse.map(e => e.punteggio));
     setMin(minScore);
     setMax(maxScore);
-  }, [house]);
+  }, [filterHouse]);
 
   return <>
-    {house && house.map((e) => (
+    {filterHouse.map((e) => (
       <Marker position={[e.latitude, e.longitude]} key={e.id} icon={icon(e.punteggio)} >
         <Popup> 
           <small>Prezzo: {e.prezzo}m² </small>

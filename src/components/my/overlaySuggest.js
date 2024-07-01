@@ -57,9 +57,9 @@ export default function OverlaySuggest() {
   return <>
     {bestArea.map((e, index)=>(
       <>
-        <Circle center={[e.centroide[0], e.centroide[1]]} radius={18} pathOptions={{ color: '#005566', weight: 2, }}/>
         <Rectangle bounds={[[e.y, e.x], [e.y-e.height, e.x+e.width]]} key={index}
-          pathOptions={{ color: 'gray', weight: 2, }} />
+          pathOptions={{ color: 'gray', weight: 1.5 }} />
+        <Circle center={[e.centroide[0], e.centroide[1]]} radius={18} pathOptions={{ color: '#005566', weight: 2, }}/>
       </>
     ))}
   </>

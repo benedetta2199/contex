@@ -14,7 +14,7 @@ export default function Home() {
     loading: () => <p>A map is loading</p>,
     ssr: false
   }), []);
-  const { getAllNamePoI, loadHouse, updateVisibilityPoI, initializeHouse, getValutazioneZone } = currentFeature();
+  const { getAllNamePoI, updateVisibilityPoI, initializeHouse, getValutazioneZone } = currentFeature();
   const { resetMap, updateElementMap } = currentMap();
   const [elem, setElem] = useState([]);
   const [key, setKey] = useState("case");
@@ -23,14 +23,15 @@ export default function Home() {
 
   useEffect(() => {
     resetMap();
-    getValutazioneZone();
-    const fetchData = async () => {
-      setElem(getAllNamePoI());
-      await initializeHouse();
-      setLoading(false);
-    };
-    fetchData();
-  }, [loadHouse]);
+    setElem(getAllNamePoI());
+    //getValutazioneZone();
+    // const fetchData = async () => {
+      
+    //   await 
+    //   setLoading(false);
+    // };
+    //fetchData();
+  }, []);
 
   // Render the loading page if data is still being loaded
   /*if (loading) {
