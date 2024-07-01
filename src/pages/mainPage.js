@@ -5,6 +5,7 @@ import ModalZona from '@components/my/modalZone';
 import dynamic from 'next/dynamic'; 
 import { useEffect, useState } from 'react';
 import { currentFeature, currentMap } from './api/state';
+import ModalNCase from '@components/my/modalNCase';
 //import Preload from '@components/my/sliderRaggio'; // Import the Preload component
 //import { useRouter } from 'next/router';
 
@@ -58,7 +59,7 @@ export default function Home() {
               </div>
               <div className='d-flex justify-content-around'>
                 <ModalRaggio />
-                <Button>Case visualizzate</Button>
+                <ModalNCase />
               </div>
             </div>
           </Tab>
@@ -77,24 +78,20 @@ export default function Home() {
           </Tab>
           <Tab eventKey="consigli" title="Consigli" className='menu-tab'>
             <div className="p-1">
-              {/*
-              <h2 className='h6'>Consigli</h2>
-              <p>Leggi i nostri consigli su come scegliere la casa ideale, trattare con i venditori e risparmiare sui costi di acquisto.</p>
-              <Button variant="primary">Leggi Consigli</Button>
-              */}
+              <p>Qui vengono mostrate le zone in base alle preferenze inserite, specificando il centro del</p>
             </div>
           </Tab>
         </Tabs>
           <div>
             <hr />
-            <p className='w-100 text-center'> Mostra gli elementi di rilevanza</p>
+            <p className='w-100 text-center'> Mostra gli elementi di rilevanza </p>
             <div className='text-start ps-3'>
               {elem.map((e) => (
                 <Form.Group key={e.key}>
                   <Form.Check.Input type='checkbox'  id={`default-${e.kay}`} 
                   onChange={(event) => updateVisibilityPoI(e.key, event.target.checked)} />
                   <img src={`./icon/${e.key}.svg`} className='icon' />
-                  <Form.Check.Label htmlFor={`default-${e.key}`} className='px-2'> {e.name} </Form.Check.Label>
+                  <Form.Check.Label htmlFor={`default-${e.key}`} className='px-2'> {`${e.name} (${e.value})`}</Form.Check.Label>
                 </Form.Group>
               ))}
             </div>

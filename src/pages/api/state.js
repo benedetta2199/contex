@@ -6,22 +6,28 @@ const sharedFeature = () => {
   /*Map dei PoI utilizzati -> key : {name, valueQuestionario, visibiliy}*/
   const [poi, setPoI] = useState(initializePoI);
 
-  /*Vettore delle zone di Bolo-> {name, select, dati geojson}*/
+  /*Array delle zone di Bolo-> {name, select, dati geojson}*/
   const [zone, setZone] = useState([]);
   const [valZone, setValZone] = useState([]);
 
-  /*raggio in metri -> float esempio: 30*/
+  /*Float raggio in km -> float esempio: 30*/
   const [raggio, setRaggio] = useState(0.5);
   
   /*case restituite dalla query in base ai parametri di raggio e risposte questionario*/
   const [house, setHouse] = useState([]);
 
+  /*Int N° case restituite*/
+  const [nhouse, setNHouse] = useState(50);
+
+  /*Array con migliori aree in base agli interessi {centroide, altezza, larghezza, xTL, yTL*/
+  const [bestArea, setBestArea] = useState([]);
+
   //initialFeatureMap, recomZone, setRecomZone
-  return { poi, setPoI, raggio, setRaggio, house, setHouse, zone, setZone,valZone, setValZone };
+  return { poi, setPoI, raggio, setRaggio, house, setHouse, zone, setZone,valZone, setValZone, bestArea, setBestArea, nhouse, setNHouse };
 };
 
 export const currentFeature = () => {
-  const { poi, setPoI, raggio, setRaggio, house, setHouse, zone, setZone, valZone, setValZone } = useBetween(sharedFeature);
+  const { poi, setPoI, raggio, setRaggio, house, setHouse, zone, setZone, valZone, setValZone, bestArea, setBestArea, nhouse, setNHouse } = useBetween(sharedFeature);
 
 
   /*const getFeature = (elem) => {
@@ -64,7 +70,7 @@ export const currentFeature = () => {
   const getAllNamePoI = () =>{
     let res =[];
     poi.forEach((value, key) => {
-      res.push({key: key, name: value.name})
+      res.push({key: key, name: value.name, value: value.value})
     });
     return res;
   }
@@ -84,9 +90,8 @@ export const currentFeature = () => {
   }
   
   const getHouse = () =>{
-    return house;
+    return house.slice(0, nhouse);
   }
-
   const getRispQuestionario = () => {
     let ris ='';
     poi.forEach((values, keys) => {
@@ -156,10 +161,39 @@ export const currentFeature = () => {
     return valZone;
   }
 
+  
+function setSuggestArea() {
+  // Costruisci l'URL con i parametri della query
+  console.log(`http://localhost:5000/api/suggest_locations?questionario=${getRispQuestionario()}`);
+  let url = `http://localhost:5000/api/suggest_locations?questionario=${getRispQuestionario()}`;
+
+  // La richiesta fetch
+  fetch(url, {method: 'GET', headers: {'Content-Type': 'application/json' }})
+  fetch(url)
+    .then(response => {
+        if (!response.ok) {throw new Error('Network response was not ok ' + response.statusText);}
+        return response.json();
+    })
+    .then(data => { setBestArea(data.rect); })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  }
+
+  const getSuggestArea = () => {
+    return bestArea;
+  }
+
+  const getNHouse = () => {
+    console.log(nhouse)
+    return nhouse;
+  }
+
   return {updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
-    initializeHouse, getHouse,
+    initializeHouse, getHouse, getNHouse, setNHouse,
     initializedZone, getZone, updateSelectZone, setValutazioneZone, getValutazioneZone,
-    getRispQuestionario, getRaggio, setRaggio};
+    setSuggestArea, getSuggestArea,
+    getRaggio, setRaggio};
 };
 
 

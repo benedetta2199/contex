@@ -37,9 +37,9 @@ export default function OverlayHouse() {
     return L.divIcon({ html: `${renderToString(<CustomIcon color={getColor(score)} width={18} height={18} />)}`, popupAnchor: [5,-5]});
   }
                 
-
   useEffect(() => {
     const fetchedHouses = getHouse();
+    console.log(fetchedHouses);
     if (fetchedHouses.length > 0) {
       setHouse(fetchedHouses);
     }

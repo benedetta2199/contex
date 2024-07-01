@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 export default function Home() {
 
   const BOLOMap = dynamic(() => import('@components/my/BOLOmap'), {ssr: false})
-  const {resetAll, initializedZone, setValutazioneZone} = currentFeature();
+  const {resetAll, initializedZone, setValutazioneZone, setSuggestArea} = currentFeature();
   
   const r = useRouter();
 
@@ -17,6 +17,12 @@ export default function Home() {
     resetAll();
     initializedZone();
   }, []);
+
+  const btnConferma = () =>{
+    setValutazioneZone();
+    setSuggestArea(); 
+    r.push("./mainPage")
+  }
   
 
   return (
@@ -31,7 +37,7 @@ export default function Home() {
           <div className='position-fixed mx-4 w-50'>
             <Form.Group className="my-2 d-flex justify-content-around" controlId="raggio">
               <SliderRaggio button={true}/>
-              <Button variant="primary" onClick={() => {setValutazioneZone();r.push("./mainPage")}}>Conferma</Button>
+              <Button variant="primary" onClick={() => btnConferma()}>Conferma</Button>
             </Form.Group>
             <BOLOMap width="100%" height="75vh" clickable={true} circle={false} def={false}/>
           </div>

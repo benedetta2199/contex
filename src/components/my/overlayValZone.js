@@ -11,7 +11,6 @@ export default function OverlayValZone() {
   
   useEffect(() => {
       const fetchedZone = getValutazioneZone();
-      console.log(fetchedZone);
       if (fetchedZone.length > 0) {
         setValZones(fetchedZone);
       }
@@ -26,7 +25,6 @@ export default function OverlayValZone() {
 
   
   function getStyle(score) {
-    console.log(score);
     const red = { r: 184, g: 42, b: 29 };
     const yellow = { r: 176, g: 176, b: 18 };
     const green = { r: 58, g: 140, b: 46 };
