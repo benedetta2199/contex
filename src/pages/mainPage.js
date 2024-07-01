@@ -14,7 +14,7 @@ export default function Home() {
     loading: () => <p>A map is loading</p>,
     ssr: false
   }), []);
-  const { getAllNamePoI, updateVisibilityPoI, initializeHouse, getValutazioneZone } = currentFeature();
+  const { getAllNamePoI, loadHouse, updateVisibilityPoI, initializeHouse, getValutazioneZone } = currentFeature();
   const { resetMap, updateElementMap } = currentMap();
   const [elem, setElem] = useState([]);
   const [key, setKey] = useState("case");
@@ -30,7 +30,7 @@ export default function Home() {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [loadHouse]);
 
   // Render the loading page if data is still being loaded
   /*if (loading) {

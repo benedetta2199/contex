@@ -22,12 +22,18 @@ const sharedFeature = () => {
   /*Array con migliori aree in base agli interessi {centroide, altezza, larghezza, xTL, yTL*/
   const [bestArea, setBestArea] = useState([]);
 
+  const [loadHouse, setLoadHouse] = useState(false);
+
   //initialFeatureMap, recomZone, setRecomZone
-  return { poi, setPoI, raggio, setRaggio, house, setHouse, zone, setZone,valZone, setValZone, bestArea, setBestArea, nhouse, setNHouse };
+  return { poi, setPoI, raggio, loadHouse, setLoadHouse,
+    setRaggio, house, setHouse,  nhouse, setNHouse,
+    zone, setZone,valZone, setValZone, bestArea, setBestArea};
 };
 
 export const currentFeature = () => {
-  const { poi, setPoI, raggio, setRaggio, house, setHouse, zone, setZone, valZone, setValZone, bestArea, setBestArea, nhouse, setNHouse } = useBetween(sharedFeature);
+  const { poi, setPoI, raggio, loadHouse, setLoadHouse,
+    setRaggio, house, setHouse,  nhouse, setNHouse,
+    zone, setZone,valZone, setValZone, bestArea, setBestArea} = useBetween(sharedFeature);
 
 
   /*const getFeature = (elem) => {
@@ -85,7 +91,10 @@ export const currentFeature = () => {
       if (!response.ok) {throw new Error('Network response was not ok ' + response.statusText);}
       return response.json();
     })
-    .then(data => {setHouse(data);})
+    .then(data => {
+      setHouse(data);
+      setLoadHouse(true);
+    })
     .catch(error => {console.error('There was a problem with the fetch operation:', error);});
   }
   
@@ -189,7 +198,8 @@ function setSuggestArea() {
     return nhouse;
   }
 
-  return {updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
+  return {loadHouse,
+    updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
     initializeHouse, getHouse, getNHouse, setNHouse,
     initializedZone, getZone, updateSelectZone, setValutazioneZone, getValutazioneZone,
     setSuggestArea, getSuggestArea,

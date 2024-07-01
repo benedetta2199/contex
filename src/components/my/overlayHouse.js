@@ -5,7 +5,7 @@ import { currentFeature } from 'src/pages/api/state';
 import CustomIcon from 'public/icon/markerHouse';
 
 export default function OverlayHouse() {
-  const {getHouse} = currentFeature();
+  const {getHouse, loadHouse} = currentFeature();
   const [house, setHouse]= useState([]);
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
@@ -43,7 +43,7 @@ export default function OverlayHouse() {
     if (fetchedHouses.length > 0) {
       setHouse(fetchedHouses);
     }
-  }, [getHouse]);
+  }, [loadHouse]);
 
   useEffect(() => {
     const minScore = Math.min(...house.map(e => e.punteggio));
