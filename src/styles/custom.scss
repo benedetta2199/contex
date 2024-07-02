@@ -1,0 +1,31 @@
+// custom.scss
+$theme-colors: (
+  "primary": #718e92
+);
+
+@import "~bootstrap/scss/bootstrap";
+
+// Aggiungi il testo bianco ai pulsanti primari
+.btn-primary, .btn-primary:hover{
+  color: #f1ede2;
+}
+
+.btn-light {
+  font-weight: 900;
+  background-color: #f3f3f3;
+}
+
+// Sovrascrivere lo stile di Form.Range
+input[type="range"]::-webkit-slider-thumb {
+  background: #718e92 !important;
+}
+
+/* All the same stuff for Firefox */
+input[type="range"]::-moz-range-thumb {
+  background: #718e92 !important;
+}
+
+/* All the same stuff for IE */
+input[type="range"]::-ms-thumb {
+  background: #718e92 !important;
+}

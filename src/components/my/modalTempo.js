@@ -2,23 +2,29 @@ import { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { currentFeature } from 'src/pages/api/state';
 
-export default function ModalNCase() {
-  const { getNHouse, setNHouse } = currentFeature();
+export default function ModalTempo() {
+  const { time, setTime, initializeHouseBici } = currentFeature();
   
+  const TIME_MAX = 40;
 
   const [show, setShow] = useState(false);
-  const [value, setValue] = useState(getNHouse());
+  const [value, setValue] = useState(time);
 
   const handleSliderChange = (n) => {
-    n = Math.max(1, Math.min(50, n));
+    n = Math.max(1, Math.min(TIME_MAX, n));
     setValue(n);
-    setNHouse(n);
+    setTime(n);
   };
+
+  const handleClose = () =>{
+    initializeHouseBici();
+    setShow(false)
+  }
   
   return (
     <>
       <Button onClick={() => setShow(true)} className="me-2">
-        Case visualizzate
+        Cambia tempo
       </Button>
 
       {show &&  
@@ -30,22 +36,18 @@ export default function ModalNCase() {
           </Modal.Header>
           <Modal.Body>
             <Form>
-              <Form.Label className='text-right me-3'>Numero massimo di case visualizzate: {value}</Form.Label>
+              <Form.Label className='text-right me-3'>
+                Tempo massimo di distanza in bici dai punti d'interesse: {value} minut{value==1? 'o':'i'}
+              </Form.Label>
               <div className="d-flex justify-content-center align-items-center w-100">
                   <Button variant='light' className='m-1' onClick={() => handleSliderChange(value-1)}>-</Button>
-                  <Form.Range value={value} min={1} max={50} step={1} className='w-50' onChange={e => handleSliderChange(e.target.value)}/>
+                  <Form.Range value={value} min={1} max={TIME_MAX} step={1} className='w-50' onChange={e => handleSliderChange(e.target.value)}/>
                   <Button variant='light' className='m-1' onClick={() => handleSliderChange(value+1)}>+</Button>
               </div>
-              {/*}
-              <Form.Group controlId="formBasicRange">
-                <Form.Label>Valore: {getNHouse()}</Form.Label>
-                <Form.Range type="range" min="0" max="51" step={1} value={value} onChange={handleSliderChange}
-                />
-              </Form.Group>*/}
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={() => setShow(false)}>
+            <Button variant="primary" onClick={() => handleClose()}>
               Conferma
             </Button>
           </Modal.Footer>

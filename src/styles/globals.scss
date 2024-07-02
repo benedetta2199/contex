@@ -1,6 +1,7 @@
 /*Misty Blue #81ABBC - Olive Green #4D5E38 - White #F1F3F3 - Puce #403A2C*/
 
 @import url('https://fonts.googleapis.com/css2?family=Cutive&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Phudu:wght@300..900&display=swap');
 
 /*#3D1D1C, #8D480B, #B73D1E, #CC6529, EE9B00, ECE2C3, 94D2BD, 0A9396, 005F73, 2B5750, 2A5737, 001219*/
 /*:root {
@@ -41,14 +42,15 @@
   --c5D: #2C5426;
 }
 
+/*
 .c0>input:checked, .c0>input:focus {background-color: var(--c0); border-color: var(--c0D); box-shadow: none;}
 .c1>input:checked, .c1>input:focus {background-color: var(--c1); border-color: var(--c1D); box-shadow: none;}
 .c2>input:checked, .c2>input:focus {background-color: var(--c2); border-color: var(--c2D); box-shadow: none;}
 .c3>input:checked, .c3>input:focus {background-color: var(--c3); border-color: var(--c3D); box-shadow: none;}
 .c4>input:checked, .c4>input:focus {background-color: var(--c4); border-color: var(--c4D); box-shadow: none;}
-.c5>input:checked, .c5>input:focus {background-color: var(--c5); border-color: var(--c5D); box-shadow: none;}
+.c5>input:checked, .c5>input:focus {background-color: var(--c5); border-color: var(--c5D); box-shadow: none;}*/
 
-input:checked, input:focus {background-image: none; box-shadow: none !important;}
+input:checked, input:focus {background-color: var(--gray) !important; background-image: none; box-shadow: none !important;}
 
 .redT {color: var(--red);}
 .dredT {color: var(--dred);}
@@ -72,12 +74,12 @@ body {
   text-align: center;
 }
 
-h1,h2,h3,h4,h5,h6,.title{font-family: "Cutive",  monospace, serif !important;}
+h1,h2,h3,h4,h5,h6,.title{font-family: "Phudu", sans-serif !important;}
 h1{margin-top: 2vh;}
 
 a {color: inherit !important; text-decoration: none;}
 
-button{font-family: "Cutive",  monospace, serif !important; font-size: 12px !important;}
+button{font-family:  "Phudu", sans-serif !important; font-size: 12px !important;}
 
 .custom-tooltip, .custom-tooltip>* {
   background-color: #031116 !important; 
@@ -119,8 +121,9 @@ hr{color: var(--lgray);}
 
 .leaflet-control-attribution {right: -15vw; bottom: -5px; transform: scale(0.5);}
 /*quadrati cluster*/
-path.leaflet-interactive{border-radius: 20px !important;}
-
+path.leaflet-interactive{
+  fill: radial-gradient(circle, rgba(244,236,188,1) 0%, rgba(244,223,188,1) 29%, rgba(244,188,214,1) 100%) !important;
+}
 
 .visible{opacity: 1;}
 .invisible{opacity: 0;}

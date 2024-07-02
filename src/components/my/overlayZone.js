@@ -3,7 +3,7 @@ import { GeoJSON } from 'react-leaflet';
 import { currentFeature } from 'src/pages/api/state';
 
 export default function OverlayZone() {
-  const {getZone, updateSelectZone} = currentFeature();
+  const {zone, updateSelectZone} = currentFeature();
   const [zones, setZones] = useState([]);
 
   const styleDefault = {fillColor: 'rgba(255, 255, 255, 0.4)', weight: 2, color: 'rgba(120, 120, 120, 0.4)'};
@@ -11,12 +11,11 @@ export default function OverlayZone() {
 
   useEffect(() => {
     if(zones.length==0){
-      const fetchedZone = getZone();
-      if (zones.length==0 && fetchedZone.length > 0) {
-        setZones(fetchedZone);
+      if (zones.length==0 && zone.length > 0) {
+        setZones(zone);
       }
     }
-  }, [getZone]);
+  }, [zone]);
 
   const onEachZone = (data, layer, zone) => {
     layer.on({

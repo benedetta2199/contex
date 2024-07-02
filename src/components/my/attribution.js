@@ -44,6 +44,9 @@ export default function Attribution() {
         
         {/*parcheggio*/}
         <a href="https://www.flaticon.com/free-icons/park" title="park icons">Park icons created by Freepik - Flaticon</a>
+
+        {/*home*/}
+        <a href="https://www.flaticon.com/free-icons/home" title="home icons">Home icons created by Ilham Fitrotul Hayat - Flaticon</a>
     </>
   )
 }

@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react';
 import { currentFeature, currentMap } from './api/state';
 import ModalNCase from '@components/my/modalNCase';
+import ModalTempo from '@components/my/modalTempo';
 //import Preload from '@components/my/sliderRaggio'; // Import the Preload component
 //import { useRouter } from 'next/router';
 
@@ -17,7 +18,7 @@ export default function Home() {
   const { getAllNamePoI, updateVisibilityPoI, initializeHouse, getValutazioneZone } = currentFeature();
   const { resetMap, updateElementMap } = currentMap();
   const [elem, setElem] = useState([]);
-  const [key, setKey] = useState("case");
+  const [key, setKey] = useState("caseR");
   const [loading, setLoading] = useState(true); // State to manage loading
   const [initialized, setInitialized] = useState(false);
 
@@ -51,18 +52,36 @@ export default function Home() {
         <Col md={3} className='p-4'>
         <Tabs defaultActiveKey="cercaCasa" id="uncontrolled-tab-example" className="mb-3" 
           activeKey={key} onSelect={(tab) => {setKey(tab); updateElementMap(tab)}}>
-          <Tab eventKey="case" title="Cerca Casa" className='menu-tab'>
+          <Tab eventKey="caseR" title="Cerca Case" className='menu-tab'>
             <div className="p-1">
               <p>
-                Qui puoi vedere le case che soddisfano le tue richieste colorate in base alla pertineza con i punti d'interesse.
+                Qui puoi vedere le case che soddisfano le tue richieste, in base al raggio di distanza, 
+                colorate in base alla pertineza con i punti d'interesse.
               </p>
               <div className='legend'>
                 <small>Punteggio delle case</small>
                 <div class="color-scale"></div>
-                <div class="min-max"><span>Min</span><span>Min</span></div>
+                <div class="min-max"><span>Min</span><span>Max</span></div>
               </div>
               <div className='d-flex justify-content-around'>
                 <ModalRaggio />
+                <ModalNCase />
+              </div>
+            </div>
+          </Tab>
+          <Tab eventKey="caseT" title="Cerca Casa" className='menu-tab'>
+            <div className="p-1">
+              <p>
+                Qui puoi vedere le case che soddisfano le tue richieste, in base alla distanza in bici, 
+                colorate in base alla pertineza con i punti d'interesse.
+              </p>
+              <div className='legend'>
+                <small>Punteggio delle case</small>
+                <div class="color-scale"></div>
+                <div class="min-max"><span>Min</span><span>Max</span></div>
+              </div>
+              <div className='d-flex justify-content-around'>
+                <ModalTempo />
                 <ModalNCase />
               </div>
             </div>

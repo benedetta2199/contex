@@ -3,6 +3,11 @@ import { useState } from 'react';
 import { useBetween } from 'use-between';
 
 const sharedFeature = () => {
+
+  /*Bool true se c'è caricamento dei dati*/
+  const [loading, setLoading] = useState(true);
+  const [loadingT, setLoadingT] = useState(true);
+
   /*Map dei PoI utilizzati -> key : {name, valueQuestionario, visibiliy}*/
   const [poi, setPoI] = useState(initializePoI);
 
@@ -10,27 +15,33 @@ const sharedFeature = () => {
   const [zone, setZone] = useState([]);
   const [valZone, setValZone] = useState([]);
 
-  /*Float raggio in km -> float esempio: 30*/
-  const [raggio, setRaggio] = useState(0.5);
-  
+  /*Int raggio in m */
+  const [raggio, setraggio] = useState(500);
+  /*Int time in m */
+  const [time, setTime] = useState(10);
+
   /*case restituite dalla query in base ai parametri di raggio e risposte questionario*/
   const [house, setHouse] = useState([]);
-  const [filterHouse, setFilterHouse] = useState([])
+  const [houseT, setHouseT] = useState([]);
+  const [filterHouse, setFilterHouse] = useState([]);
+  const [filterHouseT, setFilterHouseT] = useState([])
 
   /*Int N° case restituite*/
   const [nhouse, setnHouse] = useState(50);
+  /*Int N° case restituite*/
+  const [nhouseT, setnHouseT] = useState(50);
 
   /*Array con migliori aree in base agli interessi {centroide, altezza, larghezza, xTL, yTL*/
   const [bestArea, setBestArea] = useState([]);
 
   //initialFeatureMap, recomZone, setRecomZone
-  return { poi, setPoI, raggio, setRaggio, house, setHouse,  nhouse, setnHouse, filterHouse, setFilterHouse,
-    zone, setZone,valZone, setValZone, bestArea, setBestArea};
+  return { poi, setPoI, raggio, setraggio, time, setTime, house, setHouse, houseT, setHouseT, nhouse, setnHouse, nhouseT, setnHouseT, filterHouseT, setFilterHouseT,
+    filterHouse, setFilterHouse, zone, setZone,valZone, setValZone, bestArea, setBestArea, loading, setLoading, loadingT, setLoadingT};
 };
 
 export const currentFeature = () => {
-  const { poi, setPoI, raggio, setRaggio, house, setHouse,  nhouse, setnHouse, filterHouse, setFilterHouse,
-    zone, setZone,valZone, setValZone, bestArea, setBestArea} = useBetween(sharedFeature);
+  const { poi, setPoI, raggio, setraggio, time, setTime, house, setHouse, houseT, setHouseT, nhouse, setnHouse, nhouseT, setnHouseT, filterHouseT, setFilterHouseT,
+    filterHouse, setFilterHouse, zone, setZone,valZone, setValZone, bestArea, setBestArea, loading, setLoading, loadingT, setLoadingT} = useBetween(sharedFeature);
 
   /*const getFeature = (elem) => {
     return featureMap[elem];
@@ -39,9 +50,15 @@ export const currentFeature = () => {
   /*funzione per riporate allo stato di partenza tutte le impostazioni PoI*/
   const resetAll = () => {
     setPoI(initializePoI);
+    setraggio(500);
     setHouse([]);
     setValZone([]);
   };
+
+  const setRaggio = (r) =>{
+    const value = Math.max(1, Math.min(5000, r));
+    setraggio(value);
+  }
 
   /*funzione che va a modificare la visibilità (value) di un PoI spefico definito da name*/
   const updateVisibilityPoI = (name, value) => {
@@ -77,25 +94,23 @@ export const currentFeature = () => {
     return res;
   }
 
-  const getRaggio = () => {
-    return raggio
-  }
-
   const initializeHouse = async () => {
-    return fetch(`http://localhost:5000/api/casa?raggio=${raggio*1000}&questionario=${getRispQuestionario()}`)
+    setLoading(true);
+    return fetch(`http://localhost:5000/api/casa?raggio=${raggio}&questionario=${getRispQuestionario()}`)
     .then(response => {
       if (!response.ok) {throw new Error('Network response was not ok ' + response.statusText);}
       return response.json();
     })
     .then(data => {
       setHouse(data);
-      setFilterHouse(data.slice(0,nhouse));
+      setFilterHouse(data.slice(0,nhouse+1));
+      setLoading(false);
     })
     .catch(error => {console.error('There was a problem with the fetch operation:', error);});
   }
   
   const getHouse = () =>{
-    return house.slice(0, nhouse);
+    return house.slice(0, nhouse+1);
   }
   const getRispQuestionario = () => {
     let ris ='';
@@ -114,17 +129,14 @@ export const currentFeature = () => {
       const zonesArray = data.features.map((feature, index) => ({
         name: feature.properties.name,
         select: false,
-        data: feature
+        data: feature,
+        point: 0,
       }));
       setZone(zonesArray);
       //setZoneGeojsonData(data);
     } catch (error) {
       console.error('Error fetching GeoJSON data:', error);
     }
-  }
-
-  const getZone = ()=>{
-    return zone;
   }
 
   const updateSelectZone = (name) => {
@@ -136,6 +148,7 @@ export const currentFeature = () => {
   };
 
   const initializedValutazioneZone = () => {
+    console.log('inizio');
     // L'oggetto da inviare come JSON
     let data = {
       'questionario': Array.from(poi.values(), (x)=> x.value), 
@@ -155,21 +168,15 @@ export const currentFeature = () => {
         return response.json();        
     }) // Converti la risposta in un oggetto JSON
     .then(responseData => {
-        setValZone(responseData);
+      setValZone(responseData);
     })
     .catch(error => {
         console.error('Error:', error); // Gestisci eventuali errori
     });
   }
-
-  const getValutazioneZone = () => {
-    return valZone;
-  }
-
   
 function initializedSuggestArea() {
   // Costruisci l'URL con i parametri della query
-  console.log(`http://localhost:5000/api/suggest_locations?questionario=${getRispQuestionario()}`);
   let url = `http://localhost:5000/api/suggest_locations?questionario=${getRispQuestionario()}`;
 
   // La richiesta fetch
@@ -182,6 +189,34 @@ function initializedSuggestArea() {
     .then(data => { setBestArea(data.rect); })
     .catch(error => {
         console.error('Error:', error);
+    });
+  }
+
+  function initializeHouseBici()  {
+    setLoadingT(true);
+    // Costruisci l'URL con i parametri della query
+    let url = `http://localhost:5000/api/bike?tempo=${time}&questionario=${getRispQuestionario()}`;
+
+    // La richiesta fetch
+    fetch(url, {
+        method: 'GET', // Specifica il metodo GET
+        headers: {
+            'Content-Type': 'application/json' // Specifica il tipo di contenuto
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    }) // Converti la risposta in un oggetto JSON
+    .then(responseData => {
+      setHouseT(responseData);
+      setFilterHouseT(responseData.slice(0,nhouseT+1));
+      setLoadingT(false);
+    })
+    .catch(error => {
+        console.error('Error:', error); // Gestisci eventuali errori
     });
   }
 
@@ -198,12 +233,18 @@ function initializedSuggestArea() {
     setFilterHouse(house.slice(0, n));
   }
 
+  const setNHouseT = (n) => {
+    setnHouse(n);
+    setFilterHouseT(houseT.slice(0, n));
+  }
 
-  return {updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
-    filterHouse, initializeHouse, getHouse, getNHouse, setNHouse,
-    initializedZone, getZone, updateSelectZone, initializedValutazioneZone, getValutazioneZone,
+
+  return {loading, loadingT, updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
+    filterHouse, initializeHouse, getHouse, getNHouse, setNHouse, filterHouseT, setNHouseT,
+    time, setTime, initializeHouseBici,
+    initializedZone, zone, updateSelectZone, initializedValutazioneZone, valZone,
     initializedSuggestArea, getSuggestArea,
-    getRaggio, setRaggio};
+    raggio, setRaggio};
 };
 
 
@@ -219,7 +260,7 @@ const sharedMap = () => {
   const [position, setPosition] = useState(DEFAULT_POS);
   const [raggio, setRaggio] = useState(0.5);
 
-  const [elementMap, setElementMap] = useState({case: true, zone: false, consigli: false})
+  const [elementMap, setElementMap] = useState({caseR: true, caseT: false, zone: false, consigli: false})
 
   return { zoom, setZoom, position, setPosition, raggio, setRaggio, elementMap, setElementMap };
 };
@@ -227,14 +268,9 @@ const sharedMap = () => {
 export const currentMap = () => {
   const { zoom, setZoom, position, setPosition, elementMap, setElementMap } = useBetween(sharedMap);
 
-  const getZoom = () => {
-    return zoom
-  }
-
   const getPosition = () =>{
     return position
   }
-  
 
   const resetMap = () => {
     setZoom(DEFAULT_ZOOM);
@@ -242,7 +278,7 @@ export const currentMap = () => {
   }
 
   const updateElementMap = (name) =>{
-    const newElementMap={case: false, zone: false, consigli: false}
+    const newElementMap={caseR: false, caseT: false, zone: false, consigli: false}
     const updatedElementMap = {
         ...newElementMap, // Mantieni gli altri attributi invariati
         [name]: true, // Imposta l'attributo specificato a true
@@ -254,7 +290,31 @@ export const currentMap = () => {
     return elementMap[name] 
   }
 
-  return { getZoom, setZoom, getPosition, setPosition, resetMap, DEFAULT_POS, updateElementMap, getElemMap};
+  const getColor = (score, min, max) => {
+    const red = { r: 184, g: 42, b: 29 };
+    const yellow = { r: 176, g: 176, b: 18 };
+    const green = { r: 58, g: 140, b: 46 };
+
+    if (max === min) return { r: 58, g: 140, b: 46 };
+
+    let normalizedScore = (score - min) / (max - min);
+
+    let r, g, b;
+    if (normalizedScore < 0.5) {
+      normalizedScore *= 2;
+      r = Math.round(red.r + normalizedScore * (yellow.r - red.r));
+      g = Math.round(red.g + normalizedScore * (yellow.g - red.g));
+      b = Math.round(red.b + normalizedScore * (yellow.b - red.b));
+    } else {
+      normalizedScore = (normalizedScore - 0.5) * 2;
+      r = Math.round(yellow.r + normalizedScore * (green.r - yellow.r));
+      g = Math.round(yellow.g + normalizedScore * (green.g - yellow.g));
+      b = Math.round(yellow.b + normalizedScore * (green.b - yellow.b));
+    }
+    return {r:r, g:g, b:b};
+  }
+
+  return { zoom, setZoom, getPosition, setPosition, resetMap, DEFAULT_POS, updateElementMap, getElemMap, getColor};
 };
 
 

@@ -6,25 +6,34 @@
   import OverlayZone from './overlayZone';
   import OverlayValZone from './overlayValZone';
   import OverlaySuggest from './overlaySuggest';
+import OverlayHouseTime from './overlayHouseTime';
 
   export default function BOLOMap(props) {
     const { width, height, clickable, circle, def } = props;
-    const { getZoom, setZoom, getPosition, setPosition, DEFAULT_POS, getElemMap } = currentMap();
-    const { getAllNamePoI, recomZone, getRaggio } = currentFeature();
+    const { zoom, setZoom, getPosition, setPosition, DEFAULT_POS, getElemMap } = currentMap();
+    const { loadingT, loading, raggio } = currentFeature();
 
     const [center, setCenter] = useState(getPosition());
-    const [mapZoom, setMapZoom] = useState(getZoom);
+    const [mapZoom, setMapZoom] = useState(zoom);
+
+    const style= { position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000, color: '#fff'};
 
     useEffect(() => {
       setCenter(getPosition());
     }, [getPosition]);
 
     useEffect(() => {
-      setMapZoom(getZoom());
-    }, [getZoom]);
+      setMapZoom(zoom);
+    }, [zoom]);
 
     return (
       <div style={{ width, height }}>
+        {(loading || loadingT) && def && getElemMap('caseR') && (
+        <div className='w-100 h-100 d-flex justify-content-center align-items-center' 
+          style={style}>
+          Stiamo elaborando i dati
+        </div>
+      )}
         <MapContainer style={{ width: '100%', height: '100%' }} center={center} zoom={mapZoom}>
         {/*<TileLayer
           url='https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
@@ -35,10 +44,11 @@
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         />
         {clickable && <OverlayZone />}
-        {def && getElemMap('case') && <OverlayHouse />}
+        {def && getElemMap('caseR') && <OverlayHouse />}
+        {def && getElemMap('caseT') && <OverlayHouseTime />}
         {def && getElemMap('zone') && <OverlayValZone />}
         {def && getElemMap('consigli') && <OverlaySuggest />}
-        {circle && <Circle center={DEFAULT_POS} radius={getRaggio() * 1000} />}
+        {circle && <Circle center={DEFAULT_POS} radius={raggio} pathOptions= {{fillColor: '#718e92', weight: 2, color: '#718e92'}} />}
         <MapEventListener setZoom={setZoom} setPosition={setPosition} />
       </MapContainer>
       </div>

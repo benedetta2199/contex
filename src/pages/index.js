@@ -14,7 +14,7 @@ export default function Home() {
   }), []);
 
 
-  const {resetAll, initializedZone, initializeHouse, initializedValutazioneZone, initializedSuggestArea} = currentFeature();
+  const {resetAll, initializedZone, initializeHouse, initializedValutazioneZone, initializedSuggestArea, initializeHouseBici} = currentFeature();
   
   const r = useRouter();
 
@@ -25,6 +25,7 @@ export default function Home() {
 
   const btnConferma = () =>{
     initializeHouse();
+    initializeHouseBici();
     initializedValutazioneZone();
     initializedSuggestArea(); 
     r.push("./mainPage")
@@ -52,7 +53,7 @@ export default function Home() {
           <div className="border rounded m-4  p-3">
             <h2 className="h6">
               Esprimi una valutazione da 1 a 5 per ogni caratteristica <br/>
-              0 se non si ritiene rilevante, 5 se si ritiene molto rilevante
+              [ 0 se non si ritiene rilevante, 5 se si ritiene molto rilevante ]
             </h2>
 
             {/*<InputPref text='Quanto è rilevante la vicinanza al centro città?' keyMap='' id='1'/>

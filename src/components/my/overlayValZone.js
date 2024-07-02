@@ -1,80 +1,89 @@
-import { MissingStaticPage } from 'next/dist/shared/lib/utils';
 import React, { useState, useEffect } from 'react';
 import { GeoJSON } from 'react-leaflet';
-import { currentFeature } from 'src/pages/api/state';
+import { currentFeature, currentMap } from 'src/pages/api/state';
 
 export default function OverlayValZone() {
-  const {getValutazioneZone} = currentFeature();
-  const [valZones, setValZones] = useState([]);
+  const { valZone, zone } = currentFeature();
+  const { getColor } = currentMap();
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
+  const [zones, setZones] = useState([]);
+  const [drawZones, setDrawZones] = useState([]);
   
-  useEffect(() => {
-      const fetchedZone = getValutazioneZone();
-      if (fetchedZone.length > 0) {
-        setValZones(fetchedZone);
-      }
-  }, [getValutazioneZone]);
+  const styleDefault = { fillOpacity: 1, color: 'rgba(0, 0, 0, 0.1)', weight: 0};
 
   useEffect(() => {
-    const minScore = Math.min(...valZones.map(e => e.punteggio));
-    const maxScore = Math.max(...valZones.map(e => e.punteggio));
+    if (valZone && valZone.length > 0) {
+      const minScore = Math.min(...valZone.map(e => e.punteggio));
+      const maxScore = Math.max(...valZone.map(e => e.punteggio));
+      setMin(minScore);
+      setMax(maxScore);
+    }
+  }, [valZone]);
+
+  useEffect(() => {
+    console.log(zone);
+    console.log(valZone);
+    const updatedDrawZones = zone.map(z => {
+      const matchedValZone = valZone.find(vz => vz.nome === z.name);
+      return {
+        ...z,
+        punteggio: matchedValZone ? matchedValZone.punteggio : 0,
+      };
+    });
+    console.log(updatedDrawZones);
+    setDrawZones(updatedDrawZones);
+    console.log(drawZones);
+    
+  }, [valZone]);
+
+  const setStyle = (point)=>{
+    /*const elem = valZone.find(val => val.nome == name);
+    console.log(valZone);
+    console.log(name);
+    console.log(elem);
+    */const color = getColor(point, min, max);
+    return {fillColor:` rgb(${color.r},${color.g},${color.b})`, fillOpacity: 0.55, 
+          weight: 2, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`};
+  }
+
+  return <>
+    {drawZones.map((zone, index) => (
+      <GeoJSON key={index} data={zone.data} style={zone.punteggio==0 ? styleDefault : setStyle(zone.punteggio)} 
+      /*onEachFeature={(data, layer) => onEachZone(data, layer, zone)*//>
+    ))}
+  </>
+}
+
+/*import React, { useState, useEffect } from 'react';
+import { GeoJSON } from 'react-leaflet';
+import { currentFeature, currentMap } from 'src/pages/api/state';
+
+export default function OverlayValZone() {
+  const {valZone} = currentFeature();
+  const { getColor } = currentMap();
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(0);
+
+  useEffect(() => {
+    console.log(valZone);
+    const minScore = Math.min(...valZone.map(e => e.punteggio));
+    const maxScore = Math.max(...valZone.map(e => e.punteggio));
     setMin(minScore);
     setMax(maxScore);
-  }, [valZones]);
+  }, [valZone]);
 
   
   function getStyle(score) {
-    const red = { r: 184, g: 42, b: 29 };
-    const yellow = { r: 176, g: 176, b: 18 };
-    const green = { r: 58, g: 140, b: 46 };
-
-    let normalizedScore = (score - min) / (max - min);
-
-    let r, g, b;
-    if (normalizedScore < 0.5) {
-      normalizedScore *= 2;
-        r = Math.round(red.r + normalizedScore * (yellow.r - red.r));
-        g = Math.round(red.g + normalizedScore * (yellow.g - red.g));
-        b = Math.round(red.b + normalizedScore * (yellow.b - red.b));
-    } else {
-      normalizedScore = (normalizedScore - 0.5) * 2;
-        r = Math.round(yellow.r + normalizedScore * (green.r - yellow.r));
-        g = Math.round(yellow.g + normalizedScore * (green.g - yellow.g));
-        b = Math.round(yellow.b + normalizedScore * (green.b - yellow.b));
-    }
-    return {fillColor:` rgb(${r},${g},${b})`, fillOpacity: 0.55, weight: 2, color: `rgba(${r}, ${g}, ${b}, 1)`}
+    const color = getColor(score, min, max);
+    return {fillColor:` rgb(${color.r},${color.g},${color.b})`, fillOpacity: 0.55, 
+              color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`, weight: 2}
   }
-/*
-
-  const onEachZone = (data, layer, zone) => {
-    layer.on({
-      click: () => {
-        updateSelectZone(data.name);
-        zone.select = !zone.select;
-        layer.setStyle(zone.select ? styleSelect : styleDefault);
-      },
-    });
-
-    // Add a tooltip with the zone name
-    if (data.properties && zone.name) {
-        var TooltipClass = {'className': 'custom-tooltip'}
-        layer.bindTooltip(zone.name, { ...TooltipClass}, TooltipClass)
-      }
-  };
 
   return <>
-    {valZones.map((zone, index) => (
-        <GeoJSON key={index} data={zone.data} style={zone.select ? styleSelect : styleDefault} 
-        onEachFeature={(data, layer) => onEachZone(data, layer, zone)}/>
-      ))}
-</>
-}
-
-  /*styleDefault*/
-  return <>
-    {valZones.map((zone, index) => (
+    {valZone.map((zone, index) => (
         <GeoJSON key={index} data={JSON.parse(zone.geom)} style={getStyle(zone.punteggio)}/>
       ))}
   </>
 }
+*/
