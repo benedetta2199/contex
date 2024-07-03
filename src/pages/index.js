@@ -14,14 +14,14 @@ export default function Home() {
   }), []);
 
 
-  const {resetAll, initializedZone, initializeHouse, initializeMoran, initializedValutazioneZone, initializedSuggestArea, initializeHouseBici} = currentFeature();
+  const {resetAll, initializedZone, initializeHouse, initializeGeoPoI, initializeMoran, initializedValutazioneZone, initializedSuggestArea, initializeHouseBici} = currentFeature();
   
   const r = useRouter();
 
   useEffect(()=>{
     resetAll();
     initializedZone();
-    initializeMoran();
+    //initializeMoran();
   }, []);
 
   const btnConferma = () =>{

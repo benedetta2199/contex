@@ -8,8 +8,8 @@ const sharedFeature = () => {
   const [loading, setLoading] = useState(true);
   const [loadingT, setLoadingT] = useState(true);
 
-  /*Map dei PoI utilizzati -> key : {name, valueQuestionario, visibiliy}*/
-  const [poi, setPoI] = useState(initializePoI);
+  /*Map dei PoI utilizzati -> key : {name, valueQuestionario, visibility, geom}*/
+  const [poi, setPoI] = useState(initializePoI());
 
   /*Array delle zone di Bolo-> {name, select, dati geojson}*/
   const [zone, setZone] = useState([]);
@@ -49,7 +49,8 @@ export const currentFeature = () => {
 
   /*funzione per riporate allo stato di partenza tutte le impostazioni PoI*/
   const resetAll = () => {
-    setPoI(initializePoI);
+    setPoI(initializePoI());
+    initializeGeoPoI();
     setraggio(500);
     setHouse([]);
     setValZone([]);
@@ -69,8 +70,7 @@ export const currentFeature = () => {
         newPoI.set(name, { ...element, visibiliy: value });
       }
       return newPoI;
-    }
-  );
+    });
   };
 
   /*funzione che va a modificare la il valore del questionario (value) di un PoI spefico definito da name*/
@@ -245,6 +245,35 @@ function initializedSuggestArea() {
     });
   }
 
+  function initializeGeoPoI() {
+    const tabelle=['teatri','chiese','scuole','impianti_sportivi', 'aree_verdi','musei','negozi','biblio','fermate','parcheggi','ospedali','stazioni','piste_ciclabili']
+    let feature = poi;
+    let i = 0 //serve per prendere il nome corretto delle tabelle
+
+    poi.forEach((value, name)=>{
+      if(name!='piste_ciclabili'){
+        // Costruisci l'URL con i parametri della query
+        let url = `http://localhost:5000/api/data?table=${tabelle[i]}`;
+        i++;
+      
+        // La richiesta fetch
+        fetch(url, {method: 'GET', headers: {'Content-Type': 'application/json' }})
+        fetch(url)
+          .then(response => {
+            if (!response.ok) {throw new Error('Network response was not ok ' + response.statusText);}
+            return response.json();
+          })
+          .then(data => { 
+            feature.set(name, { ...value, geoJSON: convertToGeoJSON(data)});
+          }).catch(error => { console.error('Error:', error);});
+      }else{
+        //da inserire le piste ciclabili
+      }
+    })
+    console.log('load geom of PoI')
+    setPoI(feature);  
+  }
+   
 
   const getSuggestArea = () => {
     return bestArea;
@@ -264,13 +293,15 @@ function initializedSuggestArea() {
     setFilterHouseT(houseT.slice(0, n));
   }
 
+  
+
 
   return {loading, loadingT, updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
     filterHouse, initializeHouse, getHouse, getNHouse, setNHouse, filterHouseT, setNHouseT,
-    time, setTime, initializeHouseBici, 
+    time, setTime, initializeHouseBici, poi,
     initializedZone, zone, updateSelectZone, initializedValutazioneZone, valZone,
     initializedSuggestArea, getSuggestArea,
-    raggio, setRaggio, initializeMoran};
+    raggio, setRaggio, initializeMoran, initializeGeoPoI};
 };
 
 
@@ -343,15 +374,25 @@ export const currentMap = () => {
   return { zoom, setZoom, getPosition, setPosition, resetMap, DEFAULT_POS, updateElementMap, getElemMap, getColor};
 };
 
-
-const initializePoI= ()=>{
-  /*'cinema e teatri'*/
-  const namePoI = ['teatri_cinema','chiese','scuole','impianti_sportivi', 'aree_verdi','musei','negozi','biblio','fermate_bus',
+const namePoI = ['teatri_cinema','chiese','scuole','impianti_sportivi', 'aree_verdi','musei','negozi','biblio','fermate_bus',
  'parcheggi','ospedali','stazioni','piste_ciclabili'];
 
-    let feature = new Map();
-    namePoI.map((name) => {
-      feature.set(name, {name: name.replace('_',' '), value: 0, visibiliy: false})
-    });
-    return feature;
+const initializePoI= ()=>{
+  let feature = new Map();
+  namePoI.map((name) => {
+    feature.set(name, {name: name.replace('_',' '), value: 0, visibiliy: false, geoJSON: null})
+  });
+  return feature;
+}
+
+function convertToGeoJSON(locations) {
+  const geoJSON = {
+    type: "FeatureCollection",
+    features: locations.map(location => ({
+      type: "Feature",
+      geometry: {type: "Point", coordinates: [location.lon, location.lat]},
+      properties: {id: location.id, nome: location.nome}
+    }))
+  };
+  return geoJSON;
 }

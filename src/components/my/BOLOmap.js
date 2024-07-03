@@ -7,11 +7,12 @@
   import OverlayValZone from './overlayValZone';
   import OverlaySuggest from './overlaySuggest';
 import OverlayHouseTime from './overlayHouseTime';
+import OverlayIcon from './overlayIcon';
 
   export default function BOLOMap(props) {
     const { width, height, clickable, circle, def } = props;
     const { zoom, setZoom, getPosition, setPosition, DEFAULT_POS, getElemMap } = currentMap();
-    const { loadingT, loading, raggio } = currentFeature();
+    const { loadingT, loading, raggio, poi } = currentFeature();
 
     const [center, setCenter] = useState(getPosition());
     const [mapZoom, setMapZoom] = useState(zoom);
@@ -43,6 +44,7 @@ import OverlayHouseTime from './overlayHouseTime';
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         />
         {clickable && <OverlayZone />}
+        {def && Array.from(poi).map(([key, value]) => (<OverlayIcon key={key} visible={value.visibiliy} value={value.geoJSON} name={key}/>))}
         {def && getElemMap('caseR') && <OverlayHouse />}
         {def && getElemMap('caseT') && <OverlayHouseTime />}
         {def && getElemMap('zone') && <OverlayValZone />}

@@ -14,18 +14,3 @@ $theme-colors: (
   font-weight: 900;
   background-color: #f3f3f3;
 }
-
-// Sovrascrivere lo stile di Form.Range
-input[type="range"]::-webkit-slider-thumb {
-  background: #718e92 !important;
-}
-
-/* All the same stuff for Firefox */
-input[type="range"]::-moz-range-thumb {
-  background: #718e92 !important;
-}
-
-/* All the same stuff for IE */
-input[type="range"]::-ms-thumb {
-  background: #718e92 !important;
-}

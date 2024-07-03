@@ -50,7 +50,8 @@
 .c4>input:checked, .c4>input:focus {background-color: var(--c4); border-color: var(--c4D); box-shadow: none;}
 .c5>input:checked, .c5>input:focus {background-color: var(--c5); border-color: var(--c5D); box-shadow: none;}*/
 
-input:checked, input:focus {background-color: var(--gray) !important; background-image: none; box-shadow: none !important;}
+input[type="radio"]:checked, input[type="radio"]:focus {background-color: var(--gray) !important; background-image: none; box-shadow: none !important;}
+input[type="checkbox"]:checked, input[type="checkbox"]:focus {accent-color: var(--gray) !important;}
 
 .redT {color: var(--red);}
 .dredT {color: var(--dred);}
@@ -110,6 +111,9 @@ path:focus {outline: none;}
 .min-max{display: flex; justify-content: space-between;}
 .min-max *{font-size: x-small; display: block;}
 
+.form-range:checked, .form-range:focus{background: transparent !important;}
+.form-range::-webkit-slider-thumb{background-color: var(--gray) !important;}
+.form-range::-moz-range-thumb{background-color: var(--gray) !important;}
 
 hr{color: var(--lgray);}
 

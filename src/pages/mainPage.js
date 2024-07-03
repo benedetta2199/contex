@@ -45,8 +45,8 @@ export default function Home() {
               </p>
               <div className='legend'>
                 <small>Punteggio delle case</small>
-                <div class="color-scale"></div>
-                <div class="min-max"><span>Min</span><span>Max</span></div>
+                <div className="color-scale"></div>
+                <div className="min-max"><span>Min</span><span>Max</span></div>
               </div>
               <div className='d-flex justify-content-around'>
                 <ModalRaggio />
@@ -65,8 +65,8 @@ export default function Home() {
               </p>
               <div className='legend'>
                 <small>Punteggio delle case</small>
-                <div class="color-scale"></div>
-                <div class="min-max"><span>Min</span><span>Max</span></div>
+                <div className="color-scale"></div>
+                <div className="min-max"><span>Min</span><span>Max</span></div>
               </div>
               <div className='d-flex justify-content-around'>
                 <ModalTempo />
@@ -83,8 +83,8 @@ export default function Home() {
               </p>
               <div className='legend'>
                 <small>Punteggio delle zone</small>
-                <div class="color-scale"></div>
-                <div class="min-max"><span>Min</span><span>Min</span></div>
+                <div className="color-scale"></div>
+                <div className="min-max"><span>Min</span><span>Min</span></div>
               </div>
               <ModalZona />
             </div>
@@ -109,7 +109,7 @@ export default function Home() {
               {elem.map((e) => (
                 <Form.Group key={e.key}>
                   <Form.Check.Input type='checkbox'  id={`default-${e.kay}`} 
-                  onChange={(event) => updateVisibilityPoI(e.key, event.target.checked)} />
+                  onChange={(event) => {updateVisibilityPoI(e.key, event.target.checked)}} />
                   <img src={`./icon/${e.key}.svg`} className='icon' />
                   <Form.Check.Label htmlFor={`default-${e.key}`} className='px-2'> {`${e.name} (${e.value})`}</Form.Check.Label>
                 </Form.Group>
