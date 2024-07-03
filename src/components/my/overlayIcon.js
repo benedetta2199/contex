@@ -8,7 +8,7 @@ export default function OverlayIcon(props) {
   const pointToLayer = (feature, latlng) => {
     const icon = L.icon({
       iconUrl: './icon/'+name+'.svg',
-      iconSize: [10,10], // dimensioni dell'icona
+      iconSize: [12,12], // dimensioni dell'icona
       iconAnchor: [16, 32], // posizione dell'icona
       popupAnchor: [0, -32] // posizione del popup
     })
@@ -17,7 +17,7 @@ export default function OverlayIcon(props) {
 
   return (
     <>
-      {visible && <GeoJSON data={value} pointToLayer={pointToLayer}/>}
+      {visible && <GeoJSON data={value} pointToLayer={pointToLayer} style={{opacity:0}}/>}
     </>
   );
 }
