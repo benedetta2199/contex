@@ -28,12 +28,11 @@ import OverlayHouseTime from './overlayHouseTime';
 
     return (
       <div style={{ width, height }}>
-        {(loading || loadingT) && def && getElemMap('caseR') && (
-        <div className='w-100 h-100 d-flex justify-content-center align-items-center' 
-          style={style}>
-          Stiamo elaborando i dati
-        </div>
-      )}
+        {def && (loading && getElemMap('caseR') || (loadingT && getElemMap('caseT'))) && (
+          <div className='w-100 h-100 d-flex justify-content-center align-items-center' style={style}>
+            Stiamo elaborando i dati
+          </div>
+        )}
         <MapContainer style={{ width: '100%', height: '100%' }} center={center} zoom={mapZoom}>
         {/*<TileLayer
           url='https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'

@@ -127,3 +127,8 @@ path.leaflet-interactive{
 
 .visible{opacity: 1;}
 .invisible{opacity: 0;}
+
+.colTab{position: relative; right: -10px;}
+.tabs {display: flex; justify-content: center;}
+.menu-tab>div {padding: 5px;}
+.tabs button.nav-link{padding: 5px;}

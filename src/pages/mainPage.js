@@ -1,14 +1,11 @@
-import Head from 'next/head';
-import { Row, Col, Button, Form, Tabs, Tab } from 'react-bootstrap';
+import { Row, Col, Form, Tabs, Tab } from 'react-bootstrap';
+import { useEffect, useMemo, useState } from 'react';
+import dynamic from 'next/dynamic'; 
 import ModalRaggio from '@components/my/modalRaggio';
 import ModalZona from '@components/my/modalZone';
-import dynamic from 'next/dynamic'; 
-import { useEffect, useMemo, useState } from 'react';
-import { currentFeature, currentMap } from './api/state';
 import ModalNCase from '@components/my/modalNCase';
 import ModalTempo from '@components/my/modalTempo';
-//import Preload from '@components/my/sliderRaggio'; // Import the Preload component
-//import { useRouter } from 'next/router';
+import { currentFeature, currentMap } from './api/state';
 
 export default function Home() {
   const BOLOMap = useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {
@@ -19,27 +16,12 @@ export default function Home() {
   const { resetMap, updateElementMap } = currentMap();
   const [elem, setElem] = useState([]);
   const [key, setKey] = useState("caseR");
-  const [loading, setLoading] = useState(true); // State to manage loading
-  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     resetMap();
     setElem(getAllNamePoI());
-    //getValutazioneZone();
-    // const fetchData = async () => {
-      
-    //   await 
-    //   setLoading(false);
-    // };
-    //fetchData();
   }, []);
 
-  // Render the loading page if data is still being loaded
-  /*if (loading) {
-    return <Preload />;
-  }*/
-
-  // Render the main content once data is loaded
   return (
     <>
       <Row className='w-100 text-center'>
@@ -49,10 +31,13 @@ export default function Home() {
           </div>
         </Col>
 
-        <Col md={3} className='p-4'>
-        <Tabs defaultActiveKey="cercaCasa" id="uncontrolled-tab-example" className="mb-3" 
+        <Col md={3} className='px-1 py-4 colTab'>
+        <Tabs defaultActiveKey="cercaCasa" id="uncontrolled-tab-example" className="mb-3 tabs" 
           activeKey={key} onSelect={(tab) => {setKey(tab); updateElementMap(tab)}}>
-          <Tab eventKey="caseR" title="Cerca Case" className='menu-tab'>
+          <Tab eventKey="caseR" className='menu-tab'
+          title={<><img src="./icon/home.svg" className="icon" alt=""/> 
+            {key=="caseR" && <span className="tab-title">Cerca con Raggio</span>}
+            </>} >
             <div className="p-1">
               <p>
                 Qui puoi vedere le case che soddisfano le tue richieste, in base al raggio di distanza, 
@@ -65,11 +50,14 @@ export default function Home() {
               </div>
               <div className='d-flex justify-content-around'>
                 <ModalRaggio />
-                <ModalNCase />
+                <ModalNCase nRaggio={true}/>
               </div>
             </div>
           </Tab>
-          <Tab eventKey="caseT" title="Cerca Casa" className='menu-tab'>
+          <Tab eventKey="caseT"className='menu-tab'
+            title={<><img src="./icon/home.svg" className="icon" alt=""/> 
+            {key=="caseT" && <span className="tab-title">Cerca con Tempo</span>}
+            </>} >
             <div className="p-1">
               <p>
                 Qui puoi vedere le case che soddisfano le tue richieste, in base alla distanza in bici, 
@@ -82,11 +70,13 @@ export default function Home() {
               </div>
               <div className='d-flex justify-content-around'>
                 <ModalTempo />
-                <ModalNCase />
+                <ModalNCase nRaggio={false}/>
               </div>
             </div>
           </Tab>
-          <Tab eventKey="zone" title="Valuta Zone" className='menu-tab'>
+          <Tab eventKey="zone" className='menu-tab'
+            title={<><img src="./icon/home.svg" className="icon" alt=""/> 
+            {key=="zone" && <span className="tab-title">Valutazione Zone</span>} </>} >
             <div className="p-1">
               <p>
                 Guarda la valutazione delle zone che hai selezionato rispetto ai punti d'interesse.
@@ -99,12 +89,19 @@ export default function Home() {
               <ModalZona />
             </div>
           </Tab>
-          <Tab eventKey="consigli" title="Consigli" className='menu-tab'>
+          <Tab eventKey="consigli" className='menu-tab'
+            title={<><img src="./icon/home.svg" className="icon" alt=""/> 
+            {key=="consigli" && <span className="tab-title">Consigli Zone</span>} </>} >
             <div className="p-1">
               <p>Qui vengono mostrate le zone in base alle preferenze inserite, specificando il centro del</p>
             </div>
           </Tab>
         </Tabs>
+
+
+
+
+
           <div>
             <hr />
             <p className='w-100 text-center'> Mostra gli elementi di rilevanza </p>

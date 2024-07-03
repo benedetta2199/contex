@@ -7,7 +7,6 @@ export default function OverlayValZone() {
   const { getColor } = currentMap();
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
-  const [zones, setZones] = useState([]);
   const [drawZones, setDrawZones] = useState([]);
   
   const styleDefault = { fillOpacity: 1, color: 'rgba(0, 0, 0, 0.1)', weight: 0};
@@ -19,21 +18,11 @@ export default function OverlayValZone() {
       setMin(minScore);
       setMax(maxScore);
     }
-  }, [valZone]);
-
-  useEffect(() => {
-    console.log(zone);
-    console.log(valZone);
     const updatedDrawZones = zone.map(z => {
       const matchedValZone = valZone.find(vz => vz.nome === z.name);
-      return {
-        ...z,
-        punteggio: matchedValZone ? matchedValZone.punteggio : 0,
-      };
+      return {...z, punteggio: matchedValZone ? matchedValZone.punteggio : 0};
     });
-    console.log(updatedDrawZones);
     setDrawZones(updatedDrawZones);
-    console.log(drawZones);
     
   }, [valZone]);
 

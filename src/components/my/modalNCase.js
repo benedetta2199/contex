@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { currentFeature } from 'src/pages/api/state';
 
-export default function ModalNCase() {
-  const { getNHouse, setNHouse } = currentFeature();
+export default function ModalNCase(props) {
+  const { getNHouse, setNHouse, setNHouseT } = currentFeature();
+  const {nRaggio} = props;
   
 
   const [show, setShow] = useState(false);
@@ -12,7 +13,12 @@ export default function ModalNCase() {
   const handleSliderChange = (n) => {
     n = Math.max(1, Math.min(50, n));
     setValue(n);
-    setNHouse(n);
+    if(nRaggio){
+      setNHouse(n);
+    } else {
+      setNHouseT(n);
+    }
+    
   };
   
   return (
@@ -36,12 +42,6 @@ export default function ModalNCase() {
                   <Form.Range value={value} min={1} max={50} step={1} className='w-50' onChange={e => handleSliderChange(e.target.value)}/>
                   <Button variant='light' className='m-1' onClick={() => handleSliderChange(value+1)}>+</Button>
               </div>
-              {/*}
-              <Form.Group controlId="formBasicRange">
-                <Form.Label>Valore: {getNHouse()}</Form.Label>
-                <Form.Range type="range" min="0" max="51" step={1} value={value} onChange={handleSliderChange}
-                />
-              </Form.Group>*/}
             </Form>
           </Modal.Body>
           <Modal.Footer>

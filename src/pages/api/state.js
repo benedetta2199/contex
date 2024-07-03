@@ -220,6 +220,32 @@ function initializedSuggestArea() {
     });
   }
 
+  function initializeMoran()  {
+    // Costruisci l'URL con i parametri della query
+    let url = `http://localhost:5000/api/moran`;
+
+    // La richiesta fetch
+    fetch(url, {
+        method: 'GET', // Specifica il metodo GET
+        headers: {
+            'Content-Type': 'application/json' // Specifica il tipo di contenuto
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    }) // Converti la risposta in un oggetto JSON
+    .then(responseData => {
+      console.log(responseData);
+    })
+    .catch(error => {
+        console.error('Error:', error); // Gestisci eventuali errori
+    });
+  }
+
+
   const getSuggestArea = () => {
     return bestArea;
   }
@@ -241,10 +267,10 @@ function initializedSuggestArea() {
 
   return {loading, loadingT, updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
     filterHouse, initializeHouse, getHouse, getNHouse, setNHouse, filterHouseT, setNHouseT,
-    time, setTime, initializeHouseBici,
+    time, setTime, initializeHouseBici, 
     initializedZone, zone, updateSelectZone, initializedValutazioneZone, valZone,
     initializedSuggestArea, getSuggestArea,
-    raggio, setRaggio};
+    raggio, setRaggio, initializeMoran};
 };
 
 
