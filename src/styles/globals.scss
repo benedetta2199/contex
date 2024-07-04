@@ -51,8 +51,7 @@
 .c5>input:checked, .c5>input:focus {background-color: var(--c5); border-color: var(--c5D); box-shadow: none;}*/
 
 input[type="radio"]:checked, input[type="radio"]:focus {background-color: var(--gray) !important; background-image: none; box-shadow: none !important;}
-input[type="checkbox"]:checked, input[type="checkbox"]:focus {accent-color: var(--gray) !important;}
-
+.form-check-input[type="checkbox"]:checked, .form-check-input[type="checkbox"]:focus {background-color: var(--gray);}
 .redT {color: var(--red);}
 .dredT {color: var(--dred);}
 .yellowT {color: var(--yellow);}
@@ -98,7 +97,7 @@ button{font-family:  "Phudu", sans-serif !important; font-size: 12px !important;
 
 path:focus {outline: none;}
 
-.menu-tab > div{min-height: 0.25vh;}
+.tab-pane {min-height: 0.25vh !important;}
 .menu-tab p{font-size: 14px !important; padding: 0; margin: 0 !important;}
 
 .legend{padding: 10px 20px;}

@@ -91,7 +91,7 @@ export default function Home() {
             title={<><img src="./icon/home.svg" className="icon" alt=""/> 
             {key=="consigli" && <span className="tab-title">Consigli Zone</span>} </>} >
             <div className="p-1">
-              <p>Qui vengono mostrate le zone in base alle preferenze inserite, specificando il centro del</p>
+              <p>Qui vengono mostrate le zone in base alle preferenze inserite, specificando il centro della zona</p>
             </div>
           </Tab>
         </Tabs>
@@ -104,7 +104,29 @@ export default function Home() {
             <hr />
             <p className='w-100 text-center'> Mostra gli elementi di rilevanza </p>
             <div className='text-start ps-3'>
+              <h2 className='h6 mt-3'>trasporti</h2>
               {elem.map((e) => (
+                ['fermate_bus', 'piste_ciclabili', 'parcheggi', 'stazioni'].includes(e.key) &&
+                <Form.Group key={e.key}>
+                  <Form.Check.Input type='checkbox'  id={`default-${e.kay}`} 
+                  onChange={(event) => {updateVisibilityPoI(e.key, event.target.checked)}} />
+                  <img src={`./icon/${e.key}.svg`} className='icon' />
+                  <Form.Check.Label htmlFor={`default-${e.key}`} className='px-2'> {`${e.name} (${e.value})`}</Form.Check.Label>
+                </Form.Group>
+              ))}
+              <h2 className='h6 mt-3'>Infrastrutture & Servizi </h2>
+              {elem.map((e) => (
+                ['impianti_sportivi', 'aree_verdi', 'negozi', 'ospedali',].includes(e.key) &&
+                <Form.Group key={e.key}>
+                  <Form.Check.Input type='checkbox'  id={`default-${e.kay}`} 
+                  onChange={(event) => {updateVisibilityPoI(e.key, event.target.checked)}} />
+                  <img src={`./icon/${e.key}.svg`} className='icon' />
+                  <Form.Check.Label htmlFor={`default-${e.key}`} className='px-2'> {`${e.name} (${e.value})`}</Form.Check.Label>
+                </Form.Group>
+              ))}
+              <h2 className='h6 mt-3'>Cultura</h2>
+              {elem.map((e) => (
+                ['teatri_cinema','chiese','biblio','scuole','musei'].includes(e.key) &&
                 <Form.Group key={e.key}>
                   <Form.Check.Input type='checkbox'  id={`default-${e.kay}`} 
                   onChange={(event) => {updateVisibilityPoI(e.key, event.target.checked)}} />
