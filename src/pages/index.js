@@ -27,7 +27,7 @@ export default function Home() {
   useEffect(()=>{
     resetAll();
     initializedZone();
-    //initializeMoran();
+    initializeMoran();
   }, []);
 
   const btnConferma = () =>{

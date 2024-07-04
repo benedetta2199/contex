@@ -81,6 +81,11 @@ a {color: inherit !important; text-decoration: none;}
 
 button{font-family:  "Phudu", sans-serif !important; font-size: 12px !important;}
 
+.nav-link{color: var(--gray) !important;}
+.nav-link.active{color: var(--dblue) !important;}
+.nav-link.active img{filter: none;}
+.nav-link img{filter: invert(0.45) sepia(2) saturate(1) hue-rotate(150deg);}
+
 .custom-tooltip, .custom-tooltip>* {
   background-color: #031116 !important; 
   opacity: 0.75;
@@ -137,3 +142,11 @@ path.leaflet-interactive{
 .tabs button.nav-link{padding: 5px;}
 
 .cluste {z-index: 1;}
+
+.moran{
+  position: absolute; 
+  bottom: 0.5vh; left: 0.5vw; 
+  padding: 0 10px;
+  background-color: var(--white);
+  border-radius: 15px;
+}

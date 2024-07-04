@@ -18,15 +18,15 @@ import OverlayIcon from './overlayIcon';
     const [mapZoom, setMapZoom] = useState(zoom);
 
     const style= { position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000, color: '#fff'};
-
+/*
     useEffect(() => {
       setCenter(getPosition());
     }, [getPosition]);
 
     useEffect(() => {
       setMapZoom(zoom);
-    }, [zoom]);
-
+    }, [mapZoom]);
+*/
     return (
       <div style={{ width, height }}>
         {def && (loading && getElemMap('caseR') || (loadingT && getElemMap('caseT'))) && (

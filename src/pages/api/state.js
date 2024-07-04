@@ -20,6 +20,9 @@ const sharedFeature = () => {
   /*Int time in m */
   const [time, setTime] = useState(10);
 
+  /*Float indice di MOran */
+  const [moran, setMoran] = useState(0);
+
   /*case restituite dalla query in base ai parametri di raggio e risposte questionario*/
   const [house, setHouse] = useState([]);
   const [houseT, setHouseT] = useState([]);
@@ -36,12 +39,13 @@ const sharedFeature = () => {
 
   //initialFeatureMap, recomZone, setRecomZone
   return { poi, setPoI, raggio, setraggio, time, setTime, house, setHouse, houseT, setHouseT, nhouse, setnHouse, nhouseT, setnHouseT, filterHouseT, setFilterHouseT,
-    filterHouse, setFilterHouse, zone, setZone,valZone, setValZone, bestArea, setBestArea, loading, setLoading, loadingT, setLoadingT};
+    filterHouse, setFilterHouse, zone, setZone,valZone, setValZone, bestArea, setBestArea, loading, setLoading, loadingT, setLoadingT, moran, setMoran};
 };
 
 export const currentFeature = () => {
   const { poi, setPoI, raggio, setraggio, time, setTime, house, setHouse, houseT, setHouseT, nhouse, setnHouse, nhouseT, setnHouseT, filterHouseT, setFilterHouseT,
-    filterHouse, setFilterHouse, zone, setZone,valZone, setValZone, bestArea, setBestArea, loading, setLoading, loadingT, setLoadingT} = useBetween(sharedFeature);
+    filterHouse, setFilterHouse, zone, setZone,valZone, setValZone, bestArea, setBestArea, loading, setLoading, 
+    loadingT, setLoadingT, moran, setMoran} = useBetween(sharedFeature);
 
   /*const getFeature = (elem) => {
     return featureMap[elem];
@@ -227,22 +231,14 @@ function initializedSuggestArea() {
     // La richiesta fetch
     fetch(url, {
         method: 'GET', // Specifica il metodo GET
-        headers: {
-            'Content-Type': 'application/json' // Specifica il tipo di contenuto
-        }
+        headers: {'Content-Type': 'application/json'}// Specifica il tipo di contenuto
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
+        if (!response.ok) {throw new Error('Network response was not ok ' + response.statusText);}
         return response.json();
     }) // Converti la risposta in un oggetto JSON
-    .then(responseData => {
-      console.log(responseData);
-    })
-    .catch(error => {
-        console.error('Error:', error); // Gestisci eventuali errori
-    });
+    .then(responseData => { setMoran(responseData); })
+    .catch(error => { console.error('Error:', error); });// Gestisci eventuali errori
   }
 
   function initializeGeoPoI() {
@@ -298,7 +294,7 @@ function initializedSuggestArea() {
 
   return {loading, loadingT, updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
     filterHouse, initializeHouse, getHouse, getNHouse, setNHouse, filterHouseT, setNHouseT,
-    time, setTime, initializeHouseBici, poi,
+    time, setTime, initializeHouseBici, poi, moran,
     initializedZone, zone, updateSelectZone, initializedValutazioneZone, valZone,
     initializedSuggestArea, getSuggestArea,
     raggio, setRaggio, initializeMoran, initializeGeoPoI};

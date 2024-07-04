@@ -10,7 +10,7 @@ import { currentFeature, currentMap } from './api/state';
 export default function Home() {
   const BOLOMap = useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {loading: () => <p>A map is loading</p>,
     ssr: false }), []);
-  const { getAllNamePoI, updateVisibilityPoI, initializeHouse, getValutazioneZone } = currentFeature();
+  const { getAllNamePoI, updateVisibilityPoI, initializeHouse, getValutazioneZone, moran } = currentFeature();
   const { resetMap, updateElementMap } = currentMap();
   const [elem, setElem] = useState([]);
   const [key, setKey] = useState("caseR");
@@ -88,7 +88,7 @@ export default function Home() {
             </div>
           </Tab>
           <Tab eventKey="consigli" className='menu-tab'
-            title={<><img src="./icon/home.svg" className="icon" alt=""/> 
+            title={<><img src="./icon/negozi.svg" className="icon" alt=""/> 
             {key=="consigli" && <span className="tab-title">Consigli Zone</span>} </>} >
             <div className="p-1">
               <p>Qui vengono mostrate le zone in base alle preferenze inserite, specificando il centro della zona</p>
@@ -104,7 +104,11 @@ export default function Home() {
             <hr />
             <p className='w-100 text-center'> Mostra gli elementi di rilevanza </p>
             <div className='text-start ps-3'>
-              <h2 className='h6 mt-3'>trasporti</h2>
+              <div className='d-flex justify-content-between '>
+                <h2 className='h6 mt-3'>Trasporti</h2>
+                <Form.Check.Input type='checkbox'  id='trasporti' 
+                  onChange={(event) => {updateVisibilityPoI(e.key, event.target.checked)}} />
+              </div>
               {elem.map((e) => (
                 ['fermate_bus', 'piste_ciclabili', 'parcheggi', 'stazioni'].includes(e.key) &&
                 <Form.Group key={e.key}>
@@ -114,7 +118,11 @@ export default function Home() {
                   <Form.Check.Label htmlFor={`default-${e.key}`} className='px-2'> {`${e.name} (${e.value})`}</Form.Check.Label>
                 </Form.Group>
               ))}
-              <h2 className='h6 mt-3'>Infrastrutture & Servizi </h2>
+              <div className='d-flex justify-content-between '>
+                <h2 className='h6 mt-3'>Infrastrutture & Servizi</h2>
+                <Form.Check.Input type='checkbox'  id='trasporti' 
+                  onChange={(event) => {updateVisibilityPoI(e.key, event.target.checked)}} />
+              </div>
               {elem.map((e) => (
                 ['impianti_sportivi', 'aree_verdi', 'negozi', 'ospedali',].includes(e.key) &&
                 <Form.Group key={e.key}>
@@ -124,7 +132,11 @@ export default function Home() {
                   <Form.Check.Label htmlFor={`default-${e.key}`} className='px-2'> {`${e.name} (${e.value})`}</Form.Check.Label>
                 </Form.Group>
               ))}
-              <h2 className='h6 mt-3'>Cultura</h2>
+              <div className='d-flex justify-content-between '>
+                <h2 className='h6 mt-3'>Cultura</h2>
+                <Form.Check.Input type='checkbox'  id='trasporti' 
+                  onChange={(event) => {updateVisibilityPoI(e.key, event.target.checked)}} />
+              </div>
               {elem.map((e) => (
                 ['teatri_cinema','chiese','biblio','scuole','musei'].includes(e.key) &&
                 <Form.Group key={e.key}>
@@ -136,8 +148,14 @@ export default function Home() {
               ))}
             </div>
           </div>
+          
         </Col>
       </Row>
+      <div className='moran'>
+        <h2 className='h6 mt-3'>Indice di modan</h2>
+        <div><p>Indice di Moran Rispetto ai PoI: {parseFloat(moran.PoI).toFixed(2)}</p></div>
+        <div><p>Indice di Moran Rispetto al Prezzo: {parseFloat(moran.prezzo).toFixed(2)}</p></div>
+      </div>
     </>
   );
 }

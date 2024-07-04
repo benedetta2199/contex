@@ -15,7 +15,6 @@ export default function OverlayIcon(props) {
 
   const clusterIcon = function (cluster) {
     const n = Math.min(35, 12+cluster.getChildCount()/10);
-    console.log(n);
     return new L.Icon({
       iconUrl:`./icon/${name}.svg`,
       iconSize: [n,n], // dimensioni dell'icona
@@ -27,8 +26,8 @@ export default function OverlayIcon(props) {
   return (
     <>
       {visible && 
-        <MarkerClusterGroup chunkedLoading iconCreateFunction={clusterIcon} maxClusterRadius={30} 
-          showCoverageOnHover={false} removeOutsideVisibleBounds={true}>
+        <MarkerClusterGroup chunkedLoading={true} iconCreateFunction={clusterIcon} maxClusterRadius={50} zoomToBoundsOnClick={false}
+          showCoverageOnHover={false} removeOutsideVisibleBounds={true} key={name}>
           {coords.map(e => (
             <Marker position={[e[0], e[1]]} key={e[2]} icon={icon}></Marker>
           ))}
