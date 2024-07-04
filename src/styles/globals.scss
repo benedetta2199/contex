@@ -51,7 +51,7 @@
 .c5>input:checked, .c5>input:focus {background-color: var(--c5); border-color: var(--c5D); box-shadow: none;}*/
 
 input[type="radio"]:checked, input[type="radio"]:focus {background-color: var(--gray) !important; background-image: none; box-shadow: none !important;}
-.form-check-input[type="checkbox"]:checked, .form-check-input[type="checkbox"]:focus {background-color: var(--gray);}
+.form-check-input[type="checkbox"]:checked {background-color: var(--gray);}
 .redT {color: var(--red);}
 .dredT {color: var(--dred);}
 .yellowT {color: var(--yellow);}
@@ -123,9 +123,11 @@ hr{color: var(--lgray);}
 
 .form-check-input{margin: auto 5px !important;}
 .icon{width: 20px;}
+.up{z-index: 100;}
 
 /*sotto icone casa*/
 .leaflet-div-icon{background-color:transparent !important; border: none !important;}
+.leaflet-control-layers-expanded{text-align: start;}
 
 .leaflet-control-attribution {right: -15vw; bottom: -5px; transform: scale(0.5);}
 /*quadrati cluster*/

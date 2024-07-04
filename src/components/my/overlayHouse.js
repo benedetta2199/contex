@@ -51,7 +51,7 @@ export default function OverlayHouse() {
   }
 
   const icon = (score) => {
-    return L.divIcon({ html: `${renderToString(<CustomIcon color={getScoreColor(score)} width={18} height={18} />)}`, popupAnchor: [5, -5] });
+    return L.divIcon({ html: `${renderToString(<CustomIcon color={getScoreColor(score)} width={18} height={18} className='up' />)}`, popupAnchor: [5, -5] });
   }
 
   useEffect(() => {
