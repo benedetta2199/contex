@@ -1,23 +1,39 @@
-import { GeoJSON } from 'react-leaflet';
-import L from 'leaflet';
+import { Marker } from 'react-leaflet';
+import L, { MarkerCluster } from "leaflet";
+import MarkerClusterGroup from 'react-leaflet-cluster';
+
 
 export default function OverlayIcon(props) {
-  const {value, visible, name} = props
-  // Funzione che gestisce ogni marker del GeoJSON
+  const { coords, visible, name } = props;
 
-  const pointToLayer = (feature, latlng) => {
-    const icon = L.icon({
-      iconUrl: './icon/'+name+'.svg',
-      iconSize: [12,12], // dimensioni dell'icona
-      iconAnchor: [16, 32], // posizione dell'icona
-      popupAnchor: [0, -32] // posizione del popup
-    })
-    return L.marker(latlng, { icon:  icon });
+  // Crea l'icona
+  const icon = new L.icon({
+    iconUrl: `./icon/${name}.svg`,
+    iconSize: [12, 12], // dimensioni dell'icona
+    iconAnchor: [6, 12], // posizione dell'icona
+  });
+
+  const clusterIcon = function (cluster) {
+    const n = Math.min(35, 12+cluster.getChildCount()/10);
+    console.log(n);
+    return new L.Icon({
+      iconUrl:`./icon/${name}.svg`,
+      iconSize: [n,n], // dimensioni dell'icona
+      iconAnchor: [n/2, n], // posizione dell'icona
+      className: `cluster`,
+    });
   };
 
   return (
     <>
-      {visible && <GeoJSON data={value} pointToLayer={pointToLayer} style={{opacity:0}}/>}
+      {visible && 
+        <MarkerClusterGroup chunkedLoading iconCreateFunction={clusterIcon} maxClusterRadius={30} 
+          showCoverageOnHover={false} removeOutsideVisibleBounds={true}>
+          {coords.map(e => (
+            <Marker position={[e[0], e[1]]} key={e[2]} icon={icon}></Marker>
+          ))}
+        </MarkerClusterGroup>
+      }
     </>
   );
 }

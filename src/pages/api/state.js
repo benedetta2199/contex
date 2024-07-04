@@ -264,7 +264,7 @@ function initializedSuggestArea() {
             return response.json();
           })
           .then(data => { 
-            feature.set(name, { ...value, geoJSON: convertToGeoJSON(data)});
+            feature.set(name, { ...value, coords: data.map((e)=> [e.lat, e.lon, e.id])});
           }).catch(error => { console.error('Error:', error);});
       }else{
         //da inserire le piste ciclabili
@@ -380,7 +380,7 @@ const namePoI = ['teatri_cinema','chiese','scuole','impianti_sportivi', 'aree_ve
 const initializePoI= ()=>{
   let feature = new Map();
   namePoI.map((name) => {
-    feature.set(name, {name: name.replace('_',' '), value: 0, visibiliy: false, geoJSON: null})
+    feature.set(name, {name: name.replace('_',' '), value: 0, visibiliy: false, coords: []})
   });
   return feature;
 }

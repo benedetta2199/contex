@@ -8,10 +8,8 @@ import ModalTempo from '@components/my/modalTempo';
 import { currentFeature, currentMap } from './api/state';
 
 export default function Home() {
-  const BOLOMap = useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {
-    loading: () => <p>A map is loading</p>,
-    ssr: false
-  }), []);
+  const BOLOMap = useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {loading: () => <p>A map is loading</p>,
+    ssr: false }), []);
   const { getAllNamePoI, updateVisibilityPoI, initializeHouse, getValutazioneZone } = currentFeature();
   const { resetMap, updateElementMap } = currentMap();
   const [elem, setElem] = useState([]);

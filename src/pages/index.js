@@ -8,8 +8,14 @@ import { useRouter } from 'next/router';
 
 export default function Home() {
 
+  const style= { position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000, color: '#fff'};
+
+
   const BOLOMap =  useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {
-    loading: () => <p>A map is loading</p>,
+    loading: () => {
+    <div className='w-100 h-100 d-flex justify-content-center align-items-center' style={style}>
+      Caricamento...
+    </div>},
     ssr: false
   }), []);
 

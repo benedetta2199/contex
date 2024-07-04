@@ -1,5 +1,5 @@
   import { Circle, MapContainer, TileLayer, useMapEvents, useMap } from 'react-leaflet';
-  import 'leaflet/dist/leaflet.css';
+  import 'leaflet/dist/leaflet.css'
   import { useEffect, useState, useMemo } from 'react';
   import { currentFeature, currentMap } from 'src/pages/api/state';
   import OverlayHouse from './overlayHouse';
@@ -44,7 +44,7 @@ import OverlayIcon from './overlayIcon';
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         />
         {clickable && <OverlayZone />}
-        {def && Array.from(poi).map(([key, value]) => (<OverlayIcon key={key} visible={value.visibiliy} value={value.geoJSON} name={key}/>))}
+        {def && Array.from(poi).map(([key, value]) => (<OverlayIcon key={key} visible={value.visibiliy} coords={value.coords} name={key}/>))}
         {def && getElemMap('caseR') && <OverlayHouse />}
         {def && getElemMap('caseT') && <OverlayHouseTime />}
         {def && getElemMap('zone') && <OverlayValZone />}

@@ -15,7 +15,7 @@ function GradientCircle({ center, radius, color }) {
     const svgCircle = L.divIcon({
       className: 'gradient-circle',
       html: `
-        <svg height="${radius * 2}" width="${radius * 2}" viewBox="0 0 ${radius * 2} ${radius * 2}"  style="transform: scale(${scale});">
+        <svg height="${radius * 2}" width="${radius * 2}" viewBox="0 0 ${radius * 2} ${radius * 2}"  style="transform: scale(${scale}); z-index:100">
           <defs>
             <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
               <stop offset="0%" style="stop-color:${color};stop-opacity:0.7" />
