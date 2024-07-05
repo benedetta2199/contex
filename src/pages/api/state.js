@@ -13,7 +13,8 @@ const sharedFeature = () => {
 
   /*Array delle zone di Bolo-> {name, select, dati geojson}*/
   const [zone, setZone] = useState([]);
-  const [valZone, setValZone] = useState([]);
+  /*Mappa zone selezionate-> {name, punteggio}*/
+  const [valZone, setValZone] = useState(new Map());
 
   /*Int raggio in m */
   const [raggio, setraggio] = useState(500);
@@ -134,10 +135,9 @@ export const currentFeature = () => {
         name: feature.properties.name,
         select: false,
         data: feature,
-        point: 0,
+        point: -1,
       }));
       setZone(zonesArray);
-      //setZoneGeojsonData(data);
     } catch (error) {
       console.error('Error fetching GeoJSON data:', error);
     }
@@ -146,7 +146,7 @@ export const currentFeature = () => {
   const updateSelectZone = (name) => {
     setZone((prevZones) =>
       prevZones.map((zone) =>
-        zone.name === name ? { ...zone, select: !zone.select } : zone
+        zone.name === name ? { ...zone, select: !zone.select} : zone
       )
     );
   };
@@ -172,8 +172,12 @@ export const currentFeature = () => {
         return response.json();        
     }) // Converti la risposta in un oggetto JSON
     .then(responseData => {
-      console.log(responseData);
-      setValZone(responseData);
+      const createdMap = new Map();
+      responseData.map((obj) => {
+          createdMap.set(obj.nome, obj.punteggio);
+      });
+      console.log(createdMap)
+      setValZone(createdMap);
     })
     .catch(error => {
         console.error('Error:', error); // Gestisci eventuali errori
@@ -398,55 +402,3 @@ function convertToGeoJSON(elements) {
   
   return geoJSON;
 }
-
-
-
-function convertToGeoJSONPoint(locations) {
-  const geoJSON = {
-    type: "FeatureCollection",
-    features: locations.map(location => ({
-      type: "Feature",
-      geometry: {type: "Point", coordinates: [location.lon, location.lat]},
-      properties: {id: location.id, nome: location.nome}
-    }))
-  };
-  return geoJSON;
-}
-
-const convertToGeoJSONLine = (locations) => {
-  const features = locations.map(obj => {
-    const coordinates = wkbToCoords(obj.geom);
-    return {
-      type: "Feature",
-      geometry: {
-        type: "LineString",
-        coordinates: coordinates
-      },
-      properties: {
-        id: obj.id,
-        geo_point_2d: {
-          lat: obj.lat,
-          lon: obj.lon
-        }
-      }
-    };
-  });
-}
-
-/*
-function convertToGeoJSONLine(locations) {
-  const geoJSON = {
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        geometry: {
-          type: "LineString",
-          coordinates: locations.map(location => [location.lon, location.lat])
-        },
-        properties: {}
-      }
-    ]
-  };
-  return geoJSON;
-}*/
