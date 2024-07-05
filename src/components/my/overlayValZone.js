@@ -20,25 +20,21 @@ export default function OverlayValZone() {
     }
     const updatedDrawZones = zone.map(z => {
       const matchedValZone = valZone.find(vz => vz.nome === z.name);
-      return {...z, punteggio: matchedValZone ? matchedValZone.punteggio : 0};
+      return {...z, punteggio: matchedValZone ? matchedValZone.punteggio : -1};
     });
     setDrawZones(updatedDrawZones);
-    
+    console.log(setDrawZones);
   }, [valZone]);
 
   const setStyle = (point)=>{
-    /*const elem = valZone.find(val => val.nome == name);
-    console.log(valZone);
-    console.log(name);
-    console.log(elem);
-    */const color = getColor(point, min, max);
+    const color = getColor(point, min, max);
     return {fillColor:` rgb(${color.r},${color.g},${color.b})`, fillOpacity: 0.55, 
           weight: 2, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`};
   }
 
   return <>
     {drawZones.map((zone, index) => (
-      <GeoJSON key={index} data={zone.data} style={zone.punteggio==0 ? styleDefault : setStyle(zone.punteggio)} 
+      <GeoJSON key={index} data={zone.data} style={zone.punteggio==-1 ? styleDefault : setStyle(zone.punteggio)} 
       /*onEachFeature={(data, layer) => onEachZone(data, layer, zone)*//>
     ))}
   </>

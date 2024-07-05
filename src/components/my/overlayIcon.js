@@ -36,7 +36,7 @@ export default function OverlayIcon(props) {
             showCoverageOnHover={false} removeOutsideVisibleBounds={true} key={name}>
             <GeoJSON data={geom} pointToLayer={pointToLayer}/>
           </MarkerClusterGroup>
-        : visible && <GeoJSON data={geom} style={{weight: 3, fillColor: 'rgba(219,31,72, .5)', color:'rgba(184, 42, 29, .7)' }}/>
+        : visible && <GeoJSON data={geom} style={{weight: 3, color:'rgba(184, 42, 29, .5)' }}/>
       }
     </>
   );

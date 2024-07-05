@@ -260,8 +260,6 @@ function initializedSuggestArea() {
             return response.json();
           })
           .then(data => { 
-            console.log(name);
-            console.log(convertToGeoJSON(data));
             feature.set(name, { ...value, geoJSON: convertToGeoJSON(data)});
           }).catch(error => { console.error('Error:', error);});
     })

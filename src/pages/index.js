@@ -42,7 +42,7 @@ export default function Home() {
   return (
     <>
       <div className='position-fixed fixed-top bg-body'>
-        <h1 className="mt-2 text-center mx-4 my-3 pt-3"> Titolo </h1>
+        <h1 className="mt-2 text-center mx-4 my-3 pt-3"> Your Place </h1>
         <p className="w-100 text-center">Il modo migliore per cercare casa</p>
       </div>
       <div style={{height:"125px"}}></div>

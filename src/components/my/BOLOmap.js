@@ -41,6 +41,9 @@ import OverlayIcon from './overlayIcon';
               <TileLayer url='https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'/>
             </LayersControl.BaseLayer>
+            <LayersControl.BaseLayer name="Mappa satellitare">
+            <TileLayer url='https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}' maxZoom= {20} subdomains={['mt1','mt2','mt3']}/>
+            </LayersControl.BaseLayer>
             <LayersControl.BaseLayer name="Mappa minimal" checked >
               <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'/>
