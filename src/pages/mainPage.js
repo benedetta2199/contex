@@ -1,4 +1,4 @@
-import { Row, Col, Form, Tabs, Tab } from 'react-bootstrap';
+import { Row, Col, Form, Tabs, Tab, Button } from 'react-bootstrap';
 import { useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic'; 
 import ModalRaggio from '@components/my/modalRaggio';
@@ -69,6 +69,9 @@ export default function Home() {
     return divisionArray.every((key) => state[key]);
   };
 
+  const addAll = (division) => updateDivision(division, true);
+  const removeAll = (division) => updateDivision(division, false);
+
   return (
     <>
       <Row className='w-100 text-center'>
@@ -88,7 +91,7 @@ export default function Home() {
               <div className="p-1">
                 <p>
                   Qui puoi vedere le case che soddisfano le tue richieste, in base al raggio di distanza,
-                  colorate in base alla pertineza con i punti d'interesse.
+                  colorate in base alla pertinenza con i punti d'interesse.
                 </p>
                 <div className='legend'>
                   <small>Punteggio delle case</small>
@@ -108,7 +111,7 @@ export default function Home() {
               <div className="p-1">
                 <p>
                   Qui puoi vedere le case che soddisfano le tue richieste, in base alla distanza in bici,
-                  colorate in base alla pertineza con i punti d'interesse.
+                  colorate in base alla pertinenza con i punti d'interesse.
                 </p>
                 <div className='legend'>
                   <small>Punteggio delle case</small>
@@ -149,11 +152,12 @@ export default function Home() {
             <hr />
             <p className='w-100 text-center'> Mostra gli elementi di rilevanza </p>
             <div className='text-start ps-3'>
-              <div className='d-flex justify-content-between '>
+              <div className='d-flex justify-content-between align-items-center'>
                 <h2 className='h6 mt-3'>Trasporti</h2>
-                <Form.Check.Input type='checkbox' id='trasporti'
-                  checked={checkboxState.trasporti}
-                  onChange={(event) => { updateDivision(division.trasporti, event.target.checked) }} />
+                <div>
+                  <Button variant="outline-primary" size="sm" onClick={() => addAll(division.trasporti)}>Aggiungi</Button>
+                  <Button variant="outline-dark" size="sm" className='ms-2' onClick={() => removeAll(division.trasporti)}>Rimuovi</Button>
+                </div>
               </div>
               {elem.map((e) => (
                 division.trasporti.includes(e.key) &&
@@ -165,11 +169,12 @@ export default function Home() {
                   <Form.Check.Label htmlFor={`default-${e.key}`} className='px-2'> {`${e.name} (${e.value})`}</Form.Check.Label>
                 </Form.Group>
               ))}
-              <div className='d-flex justify-content-between '>
+              <div className='d-flex justify-content-between align-items-center'>
                 <h2 className='h6 mt-3'>Infrastrutture & Servizi</h2>
-                <Form.Check.Input type='checkbox' id='sevizi'
-                  checked={checkboxState.sevizi}
-                  onChange={(event) => { updateDivision(division.sevizi, event.target.checked) }} />
+                <div>
+                  <Button variant="outline-primary" size="sm" onClick={() => addAll(division.sevizi)}>Aggiungi</Button>
+                  <Button variant="outline-dark" size="sm" className='ms-2' onClick={() => removeAll(division.sevizi)}>Rimuovi</Button>
+                </div>
               </div>
               {elem.map((e) => (
                 division.sevizi.includes(e.key) &&
@@ -181,11 +186,12 @@ export default function Home() {
                   <Form.Check.Label htmlFor={`default-${e.key}`} className='px-2'> {`${e.name} (${e.value})`}</Form.Check.Label>
                 </Form.Group>
               ))}
-              <div className='d-flex justify-content-between '>
+              <div className='d-flex justify-content-between align-items-center'>
                 <h2 className='h6 mt-3'>Cultura</h2>
-                <Form.Check.Input type='checkbox' id='cultura'
-                  checked={checkboxState.cultura}
-                  onChange={(event) => { updateDivision(division.cultura, event.target.checked) }} />
+                <div>
+                  <Button variant="outline-primary" size="sm" onClick={() => addAll(division.cultura)}>Aggiungi</Button>
+                  <Button variant="outline-dark" size="sm" className='ms-2' onClick={() => removeAll(division.cultura)}>Rimuovi</Button>
+                </div>
               </div>
               {elem.map((e) => (
                 division.cultura.includes(e.key) &&

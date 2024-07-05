@@ -172,6 +172,7 @@ export const currentFeature = () => {
         return response.json();        
     }) // Converti la risposta in un oggetto JSON
     .then(responseData => {
+      console.log(responseData);
       setValZone(responseData);
     })
     .catch(error => {
@@ -247,7 +248,6 @@ function initializedSuggestArea() {
     let i = 0 //serve per prendere il nome corretto delle tabelle
 
     poi.forEach((value, name)=>{
-      if(name!='piste_ciclabili'){
         // Costruisci l'URL con i parametri della query
         let url = `http://localhost:5000/api/data?table=${tabelle[i]}`;
         i++;
@@ -260,13 +260,13 @@ function initializedSuggestArea() {
             return response.json();
           })
           .then(data => { 
-            feature.set(name, { ...value, coords: data.map((e)=> [e.lat, e.lon, e.id])});
+            console.log(name);
+            console.log(convertToGeoJSON(data));
+            feature.set(name, { ...value, geoJSON: convertToGeoJSON(data)});
           }).catch(error => { console.error('Error:', error);});
-      }else{
-        //da inserire le piste ciclabili
-      }
     })
-    console.log('load geom of PoI')
+    console.log('load geom of PoI');
+    console.log(feature);
     setPoI(feature);  
   }
    
@@ -376,12 +376,34 @@ const namePoI = ['teatri_cinema','chiese','scuole','impianti_sportivi', 'aree_ve
 const initializePoI= ()=>{
   let feature = new Map();
   namePoI.map((name) => {
-    feature.set(name, {name: name.replace('_',' '), value: 0, visibiliy: false, coords: []})
+    feature.set(name, {name: name.replace('_',' '), value: 0, visibiliy: false, coords: [], geoJSON:null})
   });
   return feature;
 }
 
-function convertToGeoJSON(locations) {
+function convertToGeoJSON(elements) {
+  const geoJSON = {
+    type: "FeatureCollection",
+    features: elements.map(element => {
+      const geometry = JSON.parse(element.geom);
+      return {
+        type: "Feature",
+        geometry: geometry,
+        properties: {
+          id: element.id,
+          lat: element.lat,
+          lon: element.lon
+        }
+      };
+    })
+  };
+  
+  return geoJSON;
+}
+
+
+
+function convertToGeoJSONPoint(locations) {
   const geoJSON = {
     type: "FeatureCollection",
     features: locations.map(location => ({
@@ -392,3 +414,41 @@ function convertToGeoJSON(locations) {
   };
   return geoJSON;
 }
+
+const convertToGeoJSONLine = (locations) => {
+  const features = locations.map(obj => {
+    const coordinates = wkbToCoords(obj.geom);
+    return {
+      type: "Feature",
+      geometry: {
+        type: "LineString",
+        coordinates: coordinates
+      },
+      properties: {
+        id: obj.id,
+        geo_point_2d: {
+          lat: obj.lat,
+          lon: obj.lon
+        }
+      }
+    };
+  });
+}
+
+/*
+function convertToGeoJSONLine(locations) {
+  const geoJSON = {
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        geometry: {
+          type: "LineString",
+          coordinates: locations.map(location => [location.lon, location.lat])
+        },
+        properties: {}
+      }
+    ]
+  };
+  return geoJSON;
+}*/

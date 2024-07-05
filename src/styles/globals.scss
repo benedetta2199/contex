@@ -28,8 +28,8 @@
   --dark-brown: #3D1D1C;
   --brown: #8D480B;
   --gray: #718e92;
-  --c0:#B82A1D;
-  --c0D:#7C1C13;  
+  --c0:#b82a1d; //184, 42, 29
+  --c0D:#7c1c13;  //124, 28, 19
   --c1:#CC6529;
   --c1D:#AA5422;
   --c2:#eec600;
@@ -143,7 +143,8 @@ path.leaflet-interactive{
 .menu-tab>div {padding: 5px;}
 .tabs button.nav-link{padding: 5px;}
 
-.cluste {z-index: 1;}
+div.leaflet-marker-icon {z-index: 100 !important;}
+.leaflet-marker-icon {z-index: 1 !important;}
 
 .moran{
   position: absolute; 
