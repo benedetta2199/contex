@@ -12,12 +12,18 @@ import OverlayIcon from './overlayIcon';
   export default function BOLOMap(props) {
     const { width, height, clickable, circle, def } = props;
     const { zoom, setZoom, getPosition, setPosition, DEFAULT_POS, getElemMap } = currentMap();
-    const { loadingT, loading, raggio, poi } = currentFeature();
+    const { loading, raggio, poi } = currentFeature();
 
     const [center, setCenter] = useState(getPosition());
     const [mapZoom, setMapZoom] = useState(zoom);
 
     const style= { position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000, color: '#fff'};
+    useEffect(() => {
+      console.log("r "+loading.caseR);
+      console.log("t "+loading.caseT);
+      console.log("z "+loading.zone);
+      console.log("c "+loading.cluster);
+    }, [loading]);
 /*
     useEffect(() => {
       setCenter(getPosition());
@@ -29,7 +35,8 @@ import OverlayIcon from './overlayIcon';
 */
     return (
       <div style={{ width, height }}>
-        {def && (loading && getElemMap('caseR') || (loadingT && getElemMap('caseT'))) && (
+        {def && ((loading.caseR && getElemMap('caseR')) || (loading.caseT && getElemMap('caseT'))
+              || (loading.zone && getElemMap('zone')) || (loading.cluster && getElemMap('consigli'))) && (
           <div className='w-100 h-100 d-flex justify-content-center align-items-center' style={style}>
             Stiamo elaborando i dati
           </div>

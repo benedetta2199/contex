@@ -5,8 +5,8 @@ import { useBetween } from 'use-between';
 const sharedFeature = () => {
 
   /*Bool true se c'è caricamento dei dati*/
-  const [loading, setLoading] = useState(true);
-  const [loadingT, setLoadingT] = useState(true);
+  const [loading, setLoading] = useState({caseR: true, caseT: true, zone: true, cluster: true}
+    /*new Map(['caseR', true],['caseT', true],['zone', true])*/);
 
   /*Map dei PoI utilizzati -> key : {name, valueQuestionario, visibility, geom}*/
   const [poi, setPoI] = useState(initializePoI());
@@ -40,13 +40,13 @@ const sharedFeature = () => {
 
   //initialFeatureMap, recomZone, setRecomZone
   return { poi, setPoI, raggio, setraggio, time, setTime, house, setHouse, houseT, setHouseT, nhouse, setnHouse, nhouseT, setnHouseT, filterHouseT, setFilterHouseT,
-    filterHouse, setFilterHouse, zone, setZone,valZone, setValZone, bestArea, setBestArea, loading, setLoading, loadingT, setLoadingT, moran, setMoran};
+    filterHouse, setFilterHouse, zone, setZone,valZone, setValZone, bestArea, setBestArea, loading, setLoading, moran, setMoran};
 };
 
 export const currentFeature = () => {
   const { poi, setPoI, raggio, setraggio, time, setTime, house, setHouse, houseT, setHouseT, nhouse, setnHouse, nhouseT, setnHouseT, filterHouseT, setFilterHouseT,
     filterHouse, setFilterHouse, zone, setZone,valZone, setValZone, bestArea, setBestArea, loading, setLoading, 
-    loadingT, setLoadingT, moran, setMoran} = useBetween(sharedFeature);
+    moran, setMoran} = useBetween(sharedFeature);
 
   /*const getFeature = (elem) => {
     return featureMap[elem];
@@ -100,7 +100,8 @@ export const currentFeature = () => {
   }
 
   const initializeHouse = async () => {
-    setLoading(true);
+    console.log(loading.caseR+' start initialize house');
+    setLoading(prevState => ({ ...prevState, caseR: true }));
     return fetch(`http://localhost:5000/api/casa?raggio=${raggio}&questionario=${getRispQuestionario()}`)
     .then(response => {
       if (!response.ok) {throw new Error('Network response was not ok ' + response.statusText);}
@@ -109,7 +110,8 @@ export const currentFeature = () => {
     .then(data => {
       setHouse(data);
       setFilterHouse(data.slice(0,nhouse+1));
-      setLoading(false);
+      setLoading(prevState => ({ ...prevState, caseR: false }));
+      console.log(loading.caseR+' end initialize house');
     })
     .catch(error => {console.error('There was a problem with the fetch operation:', error);});
   }
@@ -125,6 +127,7 @@ export const currentFeature = () => {
   }
 
   const initializedZone = async ()=>{
+    console.log(loading.zone+' start initialize zone');
     try {
       const response = await fetch('./db/zoneBO.geojson');
       if (!response.ok) {
@@ -152,7 +155,8 @@ export const currentFeature = () => {
   };
 
   const initializedValutazioneZone = () => {
-    console.log('inizio');
+    
+    setLoading(prevState => ({ ...prevState, zone: true }));
     // L'oggetto da inviare come JSON
     let data = {
       'questionario': Array.from(poi.values(), (x)=> x.value), 
@@ -176,8 +180,10 @@ export const currentFeature = () => {
       responseData.map((obj) => {
           createdMap.set(obj.nome, obj.punteggio);
       });
-      console.log(createdMap)
       setValZone(createdMap);
+      console.log('End initialize valuetion zone');
+      
+    setLoading(prevState => ({ ...prevState, zone: false }));
     })
     .catch(error => {
         console.error('Error:', error); // Gestisci eventuali errori
@@ -185,6 +191,8 @@ export const currentFeature = () => {
   }
   
 function initializedSuggestArea() {
+  console.log(loading.cluster+' start initialize cluster');
+  setLoading(prevState => ({ ...prevState, cluster: true }));
   // Costruisci l'URL con i parametri della query
   let url = `http://localhost:5000/api/suggest_locations?questionario=${getRispQuestionario()}`;
 
@@ -195,14 +203,19 @@ function initializedSuggestArea() {
         if (!response.ok) {throw new Error('Network response was not ok ' + response.statusText);}
         return response.json();
     })
-    .then(data => { setBestArea(data.rect); })
+    .then(data => { 
+      setBestArea(data.rect); 
+      setLoading(prevState => ({ ...prevState, cluster: false }));
+      console.log(loading.cluster+' end initialize cluster');
+    })
     .catch(error => {
         console.error('Error:', error);
     });
   }
 
   function initializeHouseBici()  {
-    setLoadingT(true);
+    console.log(loading.caseT+' start initialize house Time');
+    setLoading(prevState => ({ ...prevState, caseT: true }));
     // Costruisci l'URL con i parametri della query
     let url = `http://localhost:5000/api/bike?tempo=${time}&questionario=${getRispQuestionario()}`;
 
@@ -222,7 +235,8 @@ function initializedSuggestArea() {
     .then(responseData => {
       setHouseT(responseData);
       setFilterHouseT(responseData.slice(0,nhouseT+1));
-      setLoadingT(false);
+      setLoading(prevState => ({ ...prevState, caseT: false }));
+      console.log(loading.caseT+' end initialize house time');
     })
     .catch(error => {
         console.error('Error:', error); // Gestisci eventuali errori
@@ -294,7 +308,7 @@ function initializedSuggestArea() {
   
 
 
-  return {loading, loadingT, updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
+  return {loading, updateVisibilityPoI, updateValuePoI, resetAll, getAllNamePoI,
     filterHouse, initializeHouse, getHouse, getNHouse, setNHouse, filterHouseT, setNHouseT,
     time, setTime, initializeHouseBici, poi, moran,
     initializedZone, zone, updateSelectZone, initializedValutazioneZone, valZone,
@@ -315,6 +329,7 @@ const sharedMap = () => {
   const [position, setPosition] = useState(DEFAULT_POS);
   const [raggio, setRaggio] = useState(0.5);
 
+  /*pagina del main visualizzata*/
   const [elementMap, setElementMap] = useState({caseR: true, caseT: false, zone: false, consigli: false})
 
   return { zoom, setZoom, position, setPosition, raggio, setRaggio, elementMap, setElementMap };
