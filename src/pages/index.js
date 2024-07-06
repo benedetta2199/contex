@@ -1,15 +1,12 @@
-import { Row , Col, Button, Form} from 'react-bootstrap';
+import { Row , Col, Button, Form, Toast, ToastContainer} from 'react-bootstrap';
 import InputPref from '@components/my/inputPref';
 import SliderRaggio from '@components/my/sliderRaggio';
 import dynamic from 'next/dynamic';
 import { currentFeature } from './api/state';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 
 export default function Home() {
-
-  const style= { position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000, color: '#fff'};
-
 
   const BOLOMap =  useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {
     loading: () => {
@@ -19,8 +16,10 @@ export default function Home() {
     ssr: false
   }), []);
 
+  const style= { position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000, color: '#fff'};
+  const [show, setShow] = useState(false);
 
-  const {resetAll, initializedZone, initializeHouse, initializeGeoPoI, initializeMoran, initializedValutazioneZone, initializedSuggestArea, initializeHouseBici} = currentFeature();
+  const {resetAll, initializedZone, initializeHouse, checkQuestionario, initializeMoran, initializedValutazioneZone, initializedSuggestArea, initializeHouseBici} = currentFeature();
   
   const r = useRouter();
 
@@ -31,11 +30,15 @@ export default function Home() {
   }, []);
 
   const btnConferma = () =>{
-    initializeHouse();
-    initializeHouseBici();
-    initializedValutazioneZone();
-    initializedSuggestArea(); 
-    r.push("./mainPage")
+    if(checkQuestionario()){
+      initializeHouse();
+      initializeHouseBici();
+      initializedValutazioneZone();
+      initializedSuggestArea(); 
+      r.push("./mainPage")
+    } else{
+      setShow(true);
+    } 
   }
   
 
@@ -45,6 +48,17 @@ export default function Home() {
         <h1 className="mt-2 text-center mx-4 my-3 pt-3"> Your Place </h1>
         <p className="w-100 text-center">Il modo migliore per cercare casa</p>
       </div>
+
+      <ToastContainer position="middle-center"  className="p-3">
+        <Toast show={show} onClose={()=> {setShow(false)}} delay={3000} autohide bg={'primary'}>
+          <Toast.Header className="d-flex justify-content-end">
+          </Toast.Header>
+          <Toast.Body className="text-white">
+            Inserire almeno una valutazione nel questionario
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
+
       <div style={{height:"125px"}}></div>
       <Row className='w-100 text-center'>
         <Col md={6}>

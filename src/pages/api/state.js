@@ -100,7 +100,6 @@ export const currentFeature = () => {
   }
 
   const initializeHouse = async () => {
-    console.log(loading.caseR+' start initialize house');
     setLoading(prevState => ({ ...prevState, caseR: true }));
     return fetch(`http://localhost:5000/api/casa?raggio=${raggio}&questionario=${getRispQuestionario()}`)
     .then(response => {
@@ -111,7 +110,7 @@ export const currentFeature = () => {
       setHouse(data);
       setFilterHouse(data.slice(0,nhouse+1));
       setLoading(prevState => ({ ...prevState, caseR: false }));
-      console.log(loading.caseR+' end initialize house');
+      console.log('Load house');
     })
     .catch(error => {console.error('There was a problem with the fetch operation:', error);});
   }
@@ -127,7 +126,6 @@ export const currentFeature = () => {
   }
 
   const initializedZone = async ()=>{
-    console.log(loading.zone+' start initialize zone');
     try {
       const response = await fetch('./db/zoneBO.geojson');
       if (!response.ok) {
@@ -181,7 +179,7 @@ export const currentFeature = () => {
           createdMap.set(obj.nome, obj.punteggio);
       });
       setValZone(createdMap);
-      console.log('End initialize valuetion zone');
+      console.log('Load valuetion zone');
       
     setLoading(prevState => ({ ...prevState, zone: false }));
     })
@@ -191,7 +189,6 @@ export const currentFeature = () => {
   }
   
 function initializedSuggestArea() {
-  console.log(loading.cluster+' start initialize cluster');
   setLoading(prevState => ({ ...prevState, cluster: true }));
   // Costruisci l'URL con i parametri della query
   let url = `http://localhost:5000/api/suggest_locations?questionario=${getRispQuestionario()}`;
@@ -206,7 +203,7 @@ function initializedSuggestArea() {
     .then(data => { 
       setBestArea(data.rect); 
       setLoading(prevState => ({ ...prevState, cluster: false }));
-      console.log(loading.cluster+' end initialize cluster');
+      console.log('Load cluster');
     })
     .catch(error => {
         console.error('Error:', error);
@@ -214,7 +211,6 @@ function initializedSuggestArea() {
   }
 
   function initializeHouseBici()  {
-    console.log(loading.caseT+' start initialize house Time');
     setLoading(prevState => ({ ...prevState, caseT: true }));
     // Costruisci l'URL con i parametri della query
     let url = `http://localhost:5000/api/bike?tempo=${time}&questionario=${getRispQuestionario()}`;
@@ -236,7 +232,7 @@ function initializedSuggestArea() {
       setHouseT(responseData);
       setFilterHouseT(responseData.slice(0,nhouseT+1));
       setLoading(prevState => ({ ...prevState, caseT: false }));
-      console.log(loading.caseT+' end initialize house time');
+      console.log('Load house time');
     })
     .catch(error => {
         console.error('Error:', error); // Gestisci eventuali errori
@@ -282,7 +278,6 @@ function initializedSuggestArea() {
           }).catch(error => { console.error('Error:', error);});
     })
     console.log('load geom of PoI');
-    console.log(feature);
     setPoI(feature);  
   }
    
@@ -293,6 +288,10 @@ function initializedSuggestArea() {
 
   const getNHouse = () => {
     return nhouse;
+  }
+
+  const checkQuestionario = () =>{
+    return Array.from(poi).some(item => item[1].value > 0);
   }
 
   const setNHouse = (n) => {
@@ -312,7 +311,7 @@ function initializedSuggestArea() {
     filterHouse, initializeHouse, getHouse, getNHouse, setNHouse, filterHouseT, setNHouseT,
     time, setTime, initializeHouseBici, poi, moran,
     initializedZone, zone, updateSelectZone, initializedValutazioneZone, valZone,
-    initializedSuggestArea, getSuggestArea,
+    initializedSuggestArea, getSuggestArea, checkQuestionario,
     raggio, setRaggio, initializeMoran, initializeGeoPoI};
 };
 
