@@ -8,11 +8,10 @@ import L from 'leaflet';
 export default function OverlayHouseTime() {
   const { filterHouseT } = currentFeature();
   const { getColor } = currentMap();
-  const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
 
   function getScoreColor(score) {
-    const color = getColor(score, min, max);
+    const color = getColor(score, 0, max);
     return `rgb(${color.r}, ${color.g}, ${color.b})`;
   }
 
@@ -21,9 +20,7 @@ export default function OverlayHouseTime() {
   }
 
   useEffect(() => {
-    const minScore = Math.min(...filterHouseT.map(e => e.punteggio));
     const maxScore = Math.max(...filterHouseT.map(e => e.punteggio));
-    setMin(minScore);
     setMax(maxScore);
   }, [filterHouseT]);
 

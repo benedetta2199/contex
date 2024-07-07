@@ -3,12 +3,12 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import { currentFeature } from 'src/pages/api/state';
 
 export default function ModalNCase(props) {
-  const { getNHouse, setNHouse, setNHouseT } = currentFeature();
+  const { nhouse, nhouseT, setNHouse, setNHouseT } = currentFeature();
   const {nRaggio} = props;
   
 
   const [show, setShow] = useState(false);
-  const [value, setValue] = useState(getNHouse());
+  const [value, setValue] = useState(nRaggio? nhouse : nhouseT);
 
   const handleSliderChange = (n) => {
     n = Math.max(1, Math.min(50, n));

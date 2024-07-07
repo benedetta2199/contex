@@ -39,14 +39,13 @@ function GradientCircle({ center, radius, color }) {
 }
 
 export default function OverlayHouse() {
-  const { getHouse, raggio, filterHouse } = currentFeature();
+  const { raggio, filterHouse } = currentFeature();
   const { getColor } = currentMap();
-  const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
   const [selectedMarker, setSelectedMarker] = useState(null);
 
   function getScoreColor(score) {
-    const color = getColor(score, min, max);
+    const color = getColor(score, 0, max);
     return `rgb(${color.r}, ${color.g}, ${color.b})`;
   }
 
@@ -55,12 +54,8 @@ export default function OverlayHouse() {
   }
 
   useEffect(() => {
-    const minScore = Math.min(...filterHouse.map(e => e.punteggio));
     const maxScore = Math.max(...filterHouse.map(e => e.punteggio));
-    setMin(minScore);
     setMax(maxScore);
-    
-    console.log(filterHouse);
   }, [filterHouse]);
 
   return (

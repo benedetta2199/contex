@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GeoJSON } from 'react-leaflet';
-import { currentFeature, currentMap } from 'src/pages/api/state';
-  let min = 0;
-  let max = 0;
+import { currentMap, currentFeature } from 'src/pages/api/state';
+
 export default function OverlayValZone() {
   const { valZone, zone } = currentFeature();
   const { getColor } = currentMap();
@@ -12,9 +11,6 @@ export default function OverlayValZone() {
   const styleDefault = { fillOpacity: 1, color: 'rgba(0, 0, 0, 0.1)', weight: 0};
 
   useEffect(() => {
-    const values = [...valZone.values()].map(Number);
-    min = Math.min(...values);
-    max = Math.max(...values);
 
     const updatedDrawZones = zone.map(z => {
       const p = valZone.get(z.name);
@@ -24,7 +20,8 @@ export default function OverlayValZone() {
   }, [valZone]);
 
   const setStyle = (point)=>{
-    const color = getColor(point, min, max);
+    console.log(point);
+    const color = getColor(point, 0, 100);
     return {fillColor:` rgb(${color.r},${color.g},${color.b})`, fillOpacity: 0.55, 
           weight: 2, color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`};
   }

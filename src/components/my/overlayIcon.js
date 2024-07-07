@@ -1,4 +1,4 @@
-import { Marker, GeoJSON } from 'react-leaflet';
+import { GeoJSON } from 'react-leaflet';
 import L, { MarkerCluster } from "leaflet";
 import MarkerClusterGroup from 'react-leaflet-cluster';
 

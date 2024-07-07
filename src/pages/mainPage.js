@@ -142,7 +142,7 @@ export default function Home() {
                 <div className='legend'>
                   <small>Punteggio delle zone</small>
                   <div className="color-scale"></div>
-                  <div className="min-max"><span>Min</span><span>Min</span></div>
+                  <div className="min-max"><span>Min</span><span>Max</span></div>
                 </div>
                 <ModalZona />
               </div>
