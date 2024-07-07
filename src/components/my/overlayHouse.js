@@ -15,7 +15,7 @@ function GradientCircle({ center, radius, color }) {
     const svgCircle = L.divIcon({
       className: 'gradient-circle',
       html: `
-        <svg height="${radius * 2}" width="${radius * 2}" viewBox="0 0 ${radius * 2} ${radius * 2}"  style="transform: scale(${scale}); z-index:100">
+        <svg height="${radius * 2}" width="${radius * 2}" viewBox="0 0 ${radius * 2} ${radius * 2}"  style="transform: scale(${scale}); z-index: 50 !important">
           <defs>
             <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
               <stop offset="0%" style="stop-color:${color};stop-opacity:0.7" />
@@ -59,6 +59,8 @@ export default function OverlayHouse() {
     const maxScore = Math.max(...filterHouse.map(e => e.punteggio));
     setMin(minScore);
     setMax(maxScore);
+    
+    console.log(filterHouse);
   }, [filterHouse]);
 
   return (

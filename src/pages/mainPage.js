@@ -8,7 +8,15 @@ import ModalTempo from '@components/my/modalTempo';
 import { currentFeature, currentMap } from './api/state';
 
 export default function Home() {
-  const BOLOMap = useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {loading: () => <p>A map is loading</p>, ssr: false }), []);
+  const BOLOMap = useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {
+    loading: () => {
+      <div className='w-100 h-100 d-flex justify-content-center align-items-center' style={style}>
+        Caricamento...
+      </div>},
+      ssr: false
+    }), []);
+  const style= { position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000, color: '#fff'};
+
   const { getAllNamePoI, updateVisibilityPoI, initializeHouse, getValutazioneZone, moran } = currentFeature();
   const { resetMap, updateElementMap } = currentMap();
   const [elem, setElem] = useState([]);
@@ -48,13 +56,13 @@ export default function Home() {
   };
 
   const handleCheckboxChange = async (key, checked) => {
+    await updateVisibilityPoI(key, checked);
     setCheckboxState((prevState) => {
       const updatedState = { ...prevState, [key]: checked };
       const category = getCategoryKeyFromElemKey(key);
       updatedState[category] = checkAllSelected(division[category], updatedState);
       return updatedState;
     });
-    await updateVisibilityPoI(key, checked);
   };
 
   const getCategoryKey = (divisionArray) => {
@@ -85,8 +93,8 @@ export default function Home() {
           <Tabs defaultActiveKey="cercaCasa" id="uncontrolled-tab-example" className="mb-3 tabs" 
             activeKey={key} onSelect={(tab) => { setKey(tab); updateElementMap(tab) }}>
             <Tab eventKey="caseR" className='menu-tab'
-              title={<><img src="./icon/home.svg" className="icon" alt="" />
-                {key === "caseR" && <span className="tab-title">Cerca con Raggio</span>}
+              title={<><img src="./icon/caseR.svg" className="icon" alt="" />
+                {key === "caseR" && <span className="tab-title ps-2">Cerca con Raggio</span>}
               </>} >
               <div className="p-1">
                 <p>
@@ -105,8 +113,8 @@ export default function Home() {
               </div>
             </Tab>
             <Tab eventKey="caseT" className='menu-tab'
-              title={<><img src="./icon/home.svg" className="icon" alt="" />
-                {key === "caseT" && <span className="tab-title">Cerca con Tempo</span>}
+              title={<><img src="./icon/caseT.svg" className="icon" alt="" />
+                {key === "caseT" && <span className="tab-title ps-2">Cerca con Tempo</span>}
               </>} >
               <div className="p-1">
                 <p>
@@ -125,8 +133,8 @@ export default function Home() {
               </div>
             </Tab>
             <Tab eventKey="zone" className='menu-tab'
-              title={<><img src="./icon/home.svg" className="icon" alt="" />
-                {key === "zone" && <span className="tab-title">Valutazione Zone</span>} </>} >
+              title={<><img src="./icon/zone.svg" className="icon" alt="" />
+                {key === "zone" && <span className="tab-title ps-2">Valutazione Zone</span>} </>} >
               <div className="p-1">
                 <p>
                   Guarda la valutazione delle zone che hai selezionato rispetto ai punti d'interesse.
@@ -140,8 +148,8 @@ export default function Home() {
               </div>
             </Tab>
             <Tab eventKey="consigli" className='menu-tab'
-              title={<><img src="./icon/negozi.svg" className="icon" alt="" />
-                {key === "consigli" && <span className="tab-title">Consigli Zone</span>} </>} >
+              title={<><img src="./icon/cluster.svg" className="icon" alt="" />
+                {key === "consigli" && <span className="tab-title ps-2">Consigli Zone</span>} </>} >
               <div className="p-1">
                 <p>Qui vengono mostrate le zone in base alle preferenze inserite, specificando il centro della zona</p>
               </div>

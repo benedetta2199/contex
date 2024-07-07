@@ -16,10 +16,6 @@ export default function ModalTempo() {
     setTime(n);
   };
 
-  const handleClose = () =>{
-    initializeHouseBici();
-    setShow(false)
-  }
   
   return (
     <>
@@ -47,7 +43,7 @@ export default function ModalTempo() {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={() => handleClose()}>
+            <Button variant="primary" onClick={() => { initializeHouseBici(); setShow(false)}}>
               Conferma
             </Button>
           </Modal.Footer>
