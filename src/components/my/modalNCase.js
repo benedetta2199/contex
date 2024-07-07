@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { currentFeature } from 'src/pages/api/state';
+import { currentFeature, currentUpdate, currentValue } from 'src/pages/api/state';
 
 export default function ModalNCase(props) {
-  const { nhouse, nhouseT, setNHouse, setNHouseT } = currentFeature();
+  const { nhouse, nhouseT } = currentValue();
+  const { setNHouse, setNHouseT } = currentUpdate();
   const {nRaggio} = props;
   
 

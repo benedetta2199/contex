@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { renderToString } from 'react-dom/server';
 import { Marker, Popup, useMap } from 'react-leaflet';
-import { currentFeature, currentMap } from 'src/pages/api/state';
+import { currentFeature, currentMap, currentValue } from 'src/pages/api/state';
 import CustomIcon from 'public/icon/markerHouse';
 import L from 'leaflet';
 
 export default function OverlayHouseTime() {
-  const { filterHouseT } = currentFeature();
+  const { filterHouseT } = currentValue();
   const { getColor } = currentMap();
   const [max, setMax] = useState(0);
 

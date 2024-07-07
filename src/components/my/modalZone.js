@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import BOLOMap from './BOLOmap';
-import { currentFeature } from 'src/pages/api/state';
+import { currentFeature, currentInitialization } from 'src/pages/api/state';
 
 export default function ModalZona() {
   const [show, setShow] = useState(false);
-  const { initializedValutazioneZone } = currentFeature();
+  const { initializedValutazioneZone } = currentInitialization();
 
   // Effect to handle side-effects safely
   useEffect(() => {

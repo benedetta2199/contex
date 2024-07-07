@@ -1,10 +1,11 @@
 import { useRouter } from 'next/navigation';
 import { Row , Col, Button, Form} from 'react-bootstrap';
-import { currentFeature} from 'src/pages/api/state';
+import { currentFeature, currentUpdate, currentValue} from 'src/pages/api/state';
 
 export default function SliderRaggio() {
   
-  const {raggio, setRaggio} = currentFeature();
+  const {raggio} = currentValue();
+  const {setRaggio} = currentUpdate();
 
   const checkSetRaggio = (value) => {
     if(value<0.1){value=0.1}

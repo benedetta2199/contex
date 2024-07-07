@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { GeoJSON } from 'react-leaflet';
-import { currentFeature } from 'src/pages/api/state';
+import { currentFeature, currentUpdate, currentValue } from 'src/pages/api/state';
 
 export default function OverlayZone() {
-  const {zone, updateSelectZone} = currentFeature();
+  const {zone} = currentValue();
+  const {updateSelectZone} = currentUpdate();
   const [zones, setZones] = useState([]);
 
   const styleDefault = {fillColor: 'rgba(255, 255, 255, 0.4)', weight: 2, color: 'rgba(120, 120, 120, 0.4)'};

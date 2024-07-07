@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { currentFeature } from 'src/pages/api/state';
+import { currentFeature, currentInitialization, currentUpdate, currentValue } from 'src/pages/api/state';
 
 export default function ModalTempo() {
-  const { time, setTime, initializeHouseBici } = currentFeature();
+  const { time} = currentValue();
+  const { setTime } = currentUpdate();
+  const { initializeHouseBici } = currentInitialization();
   
   const TIME_MAX = 40;
 

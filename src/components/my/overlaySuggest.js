@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css'
 import { Circle, Rectangle } from 'react-leaflet';
-import { currentFeature } from 'src/pages/api/state';
+import { currentFeature, currentValue } from 'src/pages/api/state';
 
 export default function OverlaySuggest() {
-  const {getSuggestArea} = currentFeature();
-  const bestArea= getSuggestArea();
+  const {bestArea} = currentValue();
 
   return <>
     {bestArea.map((e, index)=>(

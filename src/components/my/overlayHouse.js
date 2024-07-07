@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { renderToString } from 'react-dom/server';
 import { Marker, Popup, useMap } from 'react-leaflet';
-import { currentFeature, currentMap } from 'src/pages/api/state';
+import { currentFeature, currentMap, currentValue } from 'src/pages/api/state';
 import CustomIcon from 'public/icon/markerHouse';
 import L from 'leaflet';
 
@@ -39,7 +39,7 @@ function GradientCircle({ center, radius, color }) {
 }
 
 export default function OverlayHouse() {
-  const { raggio, filterHouse } = currentFeature();
+  const { raggio, filterHouse } = currentValue();
   const { getColor } = currentMap();
   const [max, setMax] = useState(0);
   const [selectedMarker, setSelectedMarker] = useState(null);

@@ -1,7 +1,7 @@
   import { Circle, MapContainer, TileLayer, useMapEvents, useMap, LayersControl } from 'react-leaflet';
   import 'leaflet/dist/leaflet.css'
   import { useEffect, useState, useMemo } from 'react';
-  import { currentFeature, currentMap } from 'src/pages/api/state';
+  import { currentFeature, currentMap, currentValue } from 'src/pages/api/state';
   import OverlayHouse from './overlayHouse';
   import OverlayZone from './overlayZone';
   import OverlayValZone from './overlayValZone';
@@ -12,7 +12,7 @@ import OverlayIcon from './overlayIcon';
   export default function BOLOMap(props) {
     const { width, height, clickable, circle, def } = props;
     const { zoom, setZoom, getPosition, setPosition, DEFAULT_POS, getElemMap } = currentMap();
-    const { loading, raggio, poi } = currentFeature();
+    const { loading, raggio, poi } =  currentValue();
 
     const [center, setCenter] = useState(getPosition());
     const [mapZoom, setMapZoom] = useState(zoom);

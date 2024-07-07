@@ -2,7 +2,7 @@ import { Row , Col, Button, Form, Toast, ToastContainer} from 'react-bootstrap';
 import InputPref from '@components/my/inputPref';
 import SliderRaggio from '@components/my/sliderRaggio';
 import dynamic from 'next/dynamic';
-import { currentFeature } from './api/state';
+import { currentFeature, currentInitialization } from './api/state';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -19,22 +19,17 @@ export default function Home() {
   const style= { position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000, color: '#fff'};
   const [show, setShow] = useState(false);
 
-  const {resetAll, initializedZone, initializeHouse, checkQuestionario, initializeMoran, initializedValutazioneZone, initializedSuggestArea, initializeHouseBici} = currentFeature();
+  const {resetAll, initializeValue, checkQuestionario} = currentInitialization();
   
   const r = useRouter();
 
   useEffect(()=>{
     resetAll();
-    initializedZone();
-    initializeMoran();
   }, []);
 
   const btnConferma = () =>{
     if(checkQuestionario()){
-      initializeHouse();
-      initializeHouseBici();
-      initializedValutazioneZone();
-      initializedSuggestArea(); 
+      initializeValue(); 
       r.push("./mainPage")
     } else{
       setShow(true);

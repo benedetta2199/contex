@@ -5,7 +5,7 @@ import ModalRaggio from '@components/my/modalRaggio';
 import ModalZona from '@components/my/modalZone';
 import ModalNCase from '@components/my/modalNCase';
 import ModalTempo from '@components/my/modalTempo';
-import { currentFeature, currentMap } from './api/state';
+import { currentMap, currentUpdate, currentValue } from './api/state';
 
 export default function Home() {
   const BOLOMap = useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {
@@ -17,7 +17,8 @@ export default function Home() {
     }), []);
   const style= { position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000, color: '#fff'};
 
-  const { getAllNamePoI, updateVisibilityPoI, initializeHouse, getValutazioneZone, moran } = currentFeature();
+  const { getAllNamePoI, moran } = currentValue();
+  const {updateVisibilityPoI} = currentUpdate();
   const { resetMap, updateElementMap } = currentMap();
   const [elem, setElem] = useState([]);
   const [key, setKey] = useState("caseR");

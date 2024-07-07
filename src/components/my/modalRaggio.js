@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Row , Col, Button, Form, Modal} from 'react-bootstrap';
 import SliderRaggio from './sliderRaggio';
 import BOLOMap from './BOLOmap';
-import { currentFeature } from 'src/pages/api/state';
+import { currentFeature, currentInitialization } from 'src/pages/api/state';
 
 export default function ModalRaggio() {
   
-  const {initializeHouse} = currentFeature();
+  const {initializeHouse} = currentInitialization();
   const [show, setShow] = useState(false);
 
   const handleClose = () =>{

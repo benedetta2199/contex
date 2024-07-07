@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import { currentFeature } from 'src/pages/api/state';
+import { currentFeature, currentUpdate } from 'src/pages/api/state';
 
 export default function InputPref(props) {
 
   const{id, keyMap, text} = props;
-  const {updateValuePoI} = currentFeature();
+  const {updateValuePoI} = currentUpdate();
   let [count,setCount] = useState(0);
 
   return (
