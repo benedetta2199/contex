@@ -1,7 +1,6 @@
   import { Circle, MapContainer, TileLayer, useMapEvents, useMap, LayersControl } from 'react-leaflet';
   import 'leaflet/dist/leaflet.css'
-  import { useEffect, useState, useMemo } from 'react';
-  import { currentFeature, currentMap, currentValue } from 'src/pages/api/state';
+  import { currentMap, currentValue } from 'src/pages/api/state';
   import OverlayHouse from './overlayHouse';
   import OverlayZone from './overlayZone';
   import OverlayValZone from './overlayValZone';
@@ -11,22 +10,22 @@ import OverlayIcon from './overlayIcon';
 
   export default function BOLOMap(props) {
     const { width, height, clickable, circle, def } = props;
-    const { zoom, setZoom, getPosition, setPosition, DEFAULT_POS, getElemMap } = currentMap();
+    const { zoom, setZoom, position, setPosition, DEFAULT_POS, getElemMap } = currentMap();
     const { loading, raggio, poi } =  currentValue();
 
-    const [center, setCenter] = useState(getPosition());
-    const [mapZoom, setMapZoom] = useState(zoom);
+    /*const [position, setposition] = useState(position);
+    const [zoom, setzoom] = useState(zoom);*/
 
     const style= { position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000, color: '#fff'};
     
 /*
     useEffect(() => {
-      setCenter(getPosition());
-    }, [getPosition]);
+      setposition(position());
+    }, [position]);
 
     useEffect(() => {
-      setMapZoom(zoom);
-    }, [mapZoom]);
+      setzoom(zoom);
+    }, [zoom]);
 */
     return (
       <div style={{ width, height }}>
@@ -36,7 +35,7 @@ import OverlayIcon from './overlayIcon';
             Stiamo elaborando i dati
           </div>
         )}
-      <MapContainer style={{ width: '100%', height: '100%' }} center={center} zoom={mapZoom}>
+      <MapContainer style={{ width: '100%', height: '100%' }} center={position} zoom={zoom}>
         {def ? 
           <LayersControl position="bottomright" className='text-start'>
             <LayersControl.BaseLayer name="Mappa dettagliata">
