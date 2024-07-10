@@ -7,6 +7,7 @@ import OverlayValZone from './overlayValZone';
 import OverlaySuggest from './overlaySuggest';
 import OverlayHouseTime from './overlayHouseTime';
 import OverlayIcon from './overlayIcon';
+import { Button } from 'react-bootstrap';
 
 /**
  * BOLOMap Component - Displays the map with various overlays and controls.
@@ -34,6 +35,7 @@ export default function BOLOMap(props) {
           Stiamo elaborando i dati
         </div>
       )}
+      {def && <Button className='centerPos' variant="secondary" > <img src='./icon/centerPos.svg' alt=''/></Button>}
       <MapContainer style={{ width: '100%', height: '100%' }} center={position} zoom={zoom}>
         {def ? (
           <LayersControl position="bottomright" className='text-start'>
@@ -73,7 +75,7 @@ export default function BOLOMap(props) {
         {def && getElemMap('consigli') && <OverlaySuggest />}
         {clickable && <OverlayZone />}
         {circle && <Circle center={DEFAULT_POS} radius={raggio} pathOptions={{ fillColor: '#718e92', weight: 2, color: '#718e92' }} />}
-        <MapEventListener setZoom={setZoom} setPosition={setPosition} />
+        <MapEventListener setZoom={setZoom} setPosition={setPosition} />s
       </MapContainer>
     </div>
   );

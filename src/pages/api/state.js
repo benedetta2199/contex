@@ -286,12 +286,10 @@ export const currentUpdate = () => {
    * Aggiorna l'attributo select di una specifica zona.
    * @param {string} name - Nome della zona.
    */
-  const updateSelectZone = (name) => {
+  const updateSelectZone = (name, value) => {
     setZone((prevZones) =>
-      prevZones.map((zone) =>
-        zone.name === name ? { ...zone, select: !zone.select } : zone
-      )
-    );
+      prevZones.map((z) => z.name === name ? { ...z, select: value } : z)
+    )
   };
 
   /**

@@ -153,3 +153,15 @@ div.leaflet-marker-icon {z-index: 100 !important;}
   background-color: var(--white);
   border-radius: 15px;
 }
+
+.button-overlay{ position: absolute; z-index: 1100; bottom: 0;}
+.centerPos{ 
+  position: absolute; 
+  z-index: 1100; 
+  top: 80px !important; 
+  left: 10px; 
+  padding: 0px !important;
+  border: 1px solid #718e92 !important;
+  background-color: rgba(254, 254, 254,0.4) !important;
+}
+.centerPos img{width: 20px; background-color: transparent; margin: 5px !important;}

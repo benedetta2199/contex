@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Row , Col, Button, Form, Modal} from 'react-bootstrap';
 import SliderRaggio from './sliderRaggio';
-import BOLOMap from './BOLOmap';
 import { currentFeature, currentInitialization } from 'src/pages/api/state';
+import dynamic from 'next/dynamic';
 
 export default function ModalRaggio() {
+
+  const BOLOMap = useMemo(() => dynamic(() => import('@components/my/BOLOmap'), {ssr: false}), []);
   
   const {initializeHouse} = currentInitialization();
   const [show, setShow] = useState(false);

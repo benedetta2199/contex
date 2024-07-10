@@ -1,19 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import BOLOMap from './BOLOmap';
-import { currentFeature, currentInitialization } from 'src/pages/api/state';
+import { currentInitialization } from 'src/pages/api/state';
+import dynamic from 'next/dynamic';
 
+/**
+ * ModalZona Component - Displays a modal to change the evaluation zones.
+ * @returns {JSX.Element} - The rendered component.
+ */
 export default function ModalZona() {
+  // Dynamic import of the BOLOMap component
+  const BOLOMap = useMemo(() => dynamic(() => import('@components/my/BOLOmap'), { ssr: false }), []);
+
+  // State to control the visibility of the modal
   const [show, setShow] = useState(false);
+
+  // Destructuring initialization function from state management
   const { initializedValutazioneZone } = currentInitialization();
 
-  // Effect to handle side-effects safely
+  // Effect to handle side-effects when the modal visibility changes
   useEffect(() => {
     if (show) {
-      // Any additional side-effects or state updates related to show can be handled here
+      // Handle any additional side-effects or state updates related to `show` here
     }
   }, [show]);
 
+  // Handler for the confirm button
   const handleConfirm = () => {
     initializedValutazioneZone();
     setShow(false);
@@ -39,7 +50,14 @@ export default function ModalZona() {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <BOLOMap width="100%" height="75vh" clickable={true} circle={false} def={false} suppressHydrationWarning={true}/>
+            <BOLOMap
+              width="100%"
+              height="75vh"
+              clickable={true}
+              circle={false}
+              def={false}
+              suppressHydrationWarning={true}
+            />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleConfirm}>
