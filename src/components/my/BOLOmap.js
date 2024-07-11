@@ -8,6 +8,7 @@ import OverlaySuggest from './overlaySuggest';
 import OverlayHouseTime from './overlayHouseTime';
 import OverlayIcon from './overlayIcon';
 import { Button } from 'react-bootstrap';
+import { useState } from 'react';
 
 /**
  * BOLOMap Component - Displays the map with various overlays and controls.
@@ -23,9 +24,11 @@ export default function BOLOMap(props) {
   const { width, height, clickable, circle, def } = props;
   const { zoom, setZoom, position, setPosition, DEFAULT_POS, getElemMap } = currentMap();
   const { loading, raggio, poi } = currentValue();
+  const [map, setMap] = useState(null);
 
   // Style for the loading overlay
   const style = { position: 'absolute', top: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000, color: '#fff' };
+
 
   return (
     <div style={{ width, height }}>
@@ -35,8 +38,11 @@ export default function BOLOMap(props) {
           Stiamo elaborando i dati
         </div>
       )}
-      {def && <Button className='centerPos' variant="secondary" > <img src='./icon/centerPos.svg' alt=''/></Button>}
-      <MapContainer style={{ width: '100%', height: '100%' }} center={position} zoom={zoom}>
+      {def && 
+      <Button className='centerPos' variant="secondary" onClick={()=>{map.setView(DEFAULT_POS)}}> 
+        <img src='./icon/centerPos.svg' alt=''/>
+      </Button>}
+      <MapContainer style={{ width: '100%', height: '100%' }} center={position} zoom={zoom} ref={setMap}>
         {def ? (
           <LayersControl position="bottomright" className='text-start'>
             <LayersControl.BaseLayer name="Mappa dettagliata">
@@ -99,4 +105,24 @@ const MapEventListener = ({ setZoom, setPosition }) => {
     },
   });
   return null;
+};
+
+/**
+ * CenterMapButton Component - Button to re-center the map.
+ * @param {object} props - Component props.
+ * @param {array} props.DEFAULT_POS - Default position to center the map.
+ * @returns {JSX.Element} - The rendered button component.
+ */
+const CenterMapButton = ({ DEFAULT_POS }) => {
+  const map = useMap();
+
+  const centerMap = () => {
+    map.setView(DEFAULT_POS, 13);  // Assuming 13 is the default zoom level
+  };
+
+  return (
+    <Button className='centerPos' variant="secondary" onClick={centerMap}> 
+      <img src='./icon/centerPos.svg' alt=''/>
+    </Button>
+  );
 };
